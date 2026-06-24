@@ -92,3 +92,101 @@ export async function getProductsByVendor(vendor: string) {
   const result = await shopifyFetch(query, { query: `vendor:'${vendor}'` });
   return result?.data?.products?.edges || [];
 }
+
+export async function createCart() {
+  const query = `
+    mutation cartCreate {
+      cartCreate {
+        cart {
+          id
+          checkoutUrl
+        }
+      }
+    }
+  `;
+  const result = await shopifyFetch(query);
+  return result?.data?.cartCreate?.cart;
+}
+
+export async function addToCart(cartId: string, variantId: string, quantity: number = 1) {
+  const query = `
+    mutation cartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
+      cartLinesAdd(cartId: $cartId, lines: $lines) {
+        cart {
+          id
+          checkoutUrl
+          totalQuantity
+          cost {
+            totalAmount { amount currencyCode }
+          }
+          lines(first: 50) {
+            edges {
+              node {
+                id
+                quantity
+                merchandise {
+                  ... on ProductVariant {
+                    id
+                    title
+                    price { amount currencyCode }
+                    product {
+                      title
+                      handle
+                      images(first: 1) {
+                        edges { node { url } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+  const result = await shopifyFetch(query, {
+    cartId,
+    lines: [{ merchandiseId: variantId, quantity }],
+  });
+  return result?.data?.cartLinesAdd?.cart;
+}
+
+export async function getCart(cartId: string) {
+  const query = `
+    query getCart($cartId: ID!) {
+      cart(id: $cartId) {
+        id
+        checkoutUrl
+        totalQuantity
+        cost {
+          totalAmount { amount currencyCode }
+        }
+        lines(first: 50) {
+          edges {
+            node {
+              id
+              quantity
+              merchandise {
+                ... on ProductVariant {
+                  id
+                  title
+                  price { amount currencyCode }
+                  product {
+                    title
+                    handle
+                    images(first: 1) {
+                      edges { node { url } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `;
+  const result = await shopifyFetch(query, { cartId });
+  return result?.data?.cart;
+}
