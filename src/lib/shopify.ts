@@ -25,6 +25,7 @@ export async function getProducts() {
             title
             handle
             description
+            vendor
             images(first: 1) {
               edges { node { url } }
             }
@@ -37,5 +38,57 @@ export async function getProducts() {
     }
   `;
   const result = await shopifyFetch(query);
+  return result?.data?.products?.edges || [];
+}
+
+export async function getProductByHandle(handle: string) {
+  const query = `
+    query getProduct($handle: String!) {
+      productByHandle(handle: $handle) {
+        id
+        title
+        handle
+        description
+        vendor
+        images(first: 5) {
+          edges { node { url } }
+        }
+        variants(first: 1) {
+          edges {
+            node {
+              id
+              price { amount currencyCode }
+            }
+          }
+        }
+      }
+    }
+  `;
+  const result = await shopifyFetch(query, { handle });
+  return result?.data?.productByHandle;
+}
+
+export async function getProductsByVendor(vendor: string) {
+  const query = `
+    query getProductsByVendor($query: String!) {
+      products(first: 50, query: $query) {
+        edges {
+          node {
+            id
+            title
+            handle
+            vendor
+            images(first: 1) {
+              edges { node { url } }
+            }
+            priceRange {
+              minVariantPrice { amount currencyCode }
+            }
+          }
+        }
+      }
+    }
+  `;
+  const result = await shopifyFetch(query, { query: `vendor:'${vendor}'` });
   return result?.data?.products?.edges || [];
 }
