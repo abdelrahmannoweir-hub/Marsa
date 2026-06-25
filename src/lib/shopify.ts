@@ -189,4 +189,11 @@ export async function getCart(cartId: string) {
   `;
   const result = await shopifyFetch(query, { cartId });
   return result?.data?.cart;
+}export async function getVendorStats(vendor: string) {
+  const products = await getProductsByVendor(vendor);
+  const totalProducts = products.length;
+
+  return {
+    totalProducts,
+  };
 }
