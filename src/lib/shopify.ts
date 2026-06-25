@@ -196,7 +196,22 @@ export async function getCart(cartId: string) {
   `;
   const result = await shopifyFetch(query, { cartId });
   return result?.data?.cart;
-}export async function getVendorStats(vendor: string) {
+}export async function applyCartDiscountCode(cartId: string, codes: string[]) {
+  const query = `
+    mutation cartDiscountCodesUpdate($cartId: ID!, $discountCodes: [String!]!) {
+      cartDiscountCodesUpdate(cartId: $cartId, discountCodes: $discountCodes) {
+        cart {
+          id
+          checkoutUrl
+        }
+      }
+    }
+  `;
+  const result = await shopifyFetch(query, { cartId, discountCodes: codes });
+  return result?.data?.cartDiscountCodesUpdate?.cart;
+}
+
+export async function getVendorStats(vendor: string) {
   const products = await getProductsByVendor(vendor);
   const totalProducts = products.length;
 

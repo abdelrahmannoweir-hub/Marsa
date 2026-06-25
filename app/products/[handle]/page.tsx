@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { getProductByHandle } from "../../../src/lib/shopify";
 import { useCart } from "../../../src/cart-context";
+import { TradePrice } from "../../../src/components/TradePrice";
 
 export default function ProductPage({ params }: { params: Promise<{ handle: string }> }) {
   const [product, setProduct] = useState<any>(null);
@@ -41,9 +42,13 @@ export default function ProductPage({ params }: { params: Promise<{ handle: stri
       <div>
         <p style={{ fontSize: "12px", color: "#C4572E", marginBottom: "8px" }}>{product.vendor}</p>
         <h1 style={{ fontSize: "28px", fontWeight: 600, marginBottom: "12px" }}>{product.title}</h1>
-        <p style={{ fontSize: "20px", marginBottom: "20px" }}>
+        <p style={{ fontSize: "20px", marginBottom: "8px" }}>
           {price?.amount} {price?.currencyCode}
         </p>
+        {price && (
+          <TradePrice amount={price.amount} currencyCode={price.currencyCode} />
+        )}
+        <div style={{ marginBottom: "12px" }} />
         <p style={{ fontSize: "14px", color: "#666", lineHeight: 1.7, marginBottom: "24px" }}>
           {product.description}
         </p>
