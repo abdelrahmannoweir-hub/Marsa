@@ -84,6 +84,13 @@ export async function getProductsByVendor(vendor: string) {
             priceRange {
               minVariantPrice { amount currencyCode }
             }
+            variants(first: 1) {
+              edges {
+                node {
+                  quantityAvailable
+                }
+              }
+            }
           }
         }
       }

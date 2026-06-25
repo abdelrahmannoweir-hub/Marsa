@@ -6,19 +6,30 @@ import { supabase } from "../../../src/lib/supabase";
 import { getProductsByVendor } from "../../../src/lib/shopify";
 import { BRAND } from "../../../src/config/brand";
 
+type Stats = {
+  totalOrders: number;
+  revenue: number;
+  pendingOrders: number;
+};
+
 export default function VendorDashboard() {
   const router = useRouter();
   const [vendorName, setVendorName] = useState<string | null>(null);
   const [products, setProducts] = useState<any[]>([]);
+  const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function init() {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const [{ data: userData }, { data: sessionData }] = await Promise.all([
+        supabase.auth.getUser(),
+        supabase.auth.getSession(),
+      ]);
 
-      if (!user) {
+      const user = userData.user;
+      const session = sessionData.session;
+
+      if (!user || !session) {
         router.replace("/vendor/login");
         return;
       }
@@ -30,8 +41,16 @@ export default function VendorDashboard() {
       }
 
       setVendorName(name);
-      const prods = await getProductsByVendor(name);
+
+      const [prods, statsRes] = await Promise.all([
+        getProductsByVendor(name),
+        fetch("/api/vendor/stats", {
+          headers: { Authorization: `Bearer ${session.access_token}` },
+        }).then((r) => r.json()),
+      ]);
+
       setProducts(prods);
+      setStats(statsRes);
       setLoading(false);
     }
     init();
@@ -49,6 +68,17 @@ export default function VendorDashboard() {
       </main>
     );
   }
+
+  const statCards = [
+    { value: products.length, label: "Total Products" },
+    { value: stats?.totalOrders ?? "—", label: "Total Orders" },
+    {
+      value:
+        stats != null ? `${stats.revenue.toFixed(2)} SAR` : "—",
+      label: "Revenue",
+    },
+    { value: stats?.pendingOrders ?? "—", label: "Pending Orders" },
+  ];
 
   return (
     <main
@@ -116,12 +146,7 @@ export default function VendorDashboard() {
           marginBottom: "40px",
         }}
       >
-        {[
-          { value: products.length, label: "Total Products" },
-          { value: "—", label: "Total Orders" },
-          { value: "—", label: "Revenue (SAR)" },
-          { value: "—", label: "Pending Orders" },
-        ].map(({ value, label }) => (
+        {statCards.map(({ value, label }) => (
           <div
             key={label}
             style={{
@@ -131,7 +156,11 @@ export default function VendorDashboard() {
             }}
           >
             <p
-              style={{ fontSize: "28px", fontWeight: 600, margin: "0 0 4px" }}
+              style={{
+                fontSize: label === "Revenue" ? "18px" : "28px",
+                fontWeight: 600,
+                margin: "0 0 4px",
+              }}
             >
               {value}
             </p>
@@ -160,52 +189,97 @@ export default function VendorDashboard() {
         </p>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-          {products.map(({ node }: any) => (
-            <div
-              key={node.id}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "16px",
-                border: "1px solid #eee",
-                borderRadius: "8px",
-                padding: "12px",
-              }}
-            >
+          {/* Column headers */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "60px 1fr 100px 80px",
+              gap: "16px",
+              padding: "0 12px",
+              fontSize: "11px",
+              color: "#999",
+              textTransform: "uppercase",
+              letterSpacing: "0.05em",
+            }}
+          >
+            <div />
+            <div>Product</div>
+            <div style={{ textAlign: "right" }}>Price</div>
+            <div style={{ textAlign: "right" }}>Stock</div>
+          </div>
+
+          {products.map(({ node }: any) => {
+            const qty = node.variants?.edges?.[0]?.node?.quantityAvailable;
+            return (
               <div
+                key={node.id}
                 style={{
-                  width: "60px",
-                  height: "60px",
-                  background: "#f5f5f5",
-                  borderRadius: "6px",
-                  backgroundImage: node.images.edges[0]
-                    ? `url(${node.images.edges[0].node.url})`
-                    : "none",
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  flexShrink: 0,
+                  display: "grid",
+                  gridTemplateColumns: "60px 1fr 100px 80px",
+                  alignItems: "center",
+                  gap: "16px",
+                  border: "1px solid #eee",
+                  borderRadius: "8px",
+                  padding: "12px",
                 }}
-              />
-              <div style={{ flex: 1 }}>
+              >
+                <div
+                  style={{
+                    width: "60px",
+                    height: "60px",
+                    background: "#f5f5f5",
+                    borderRadius: "6px",
+                    backgroundImage: node.images.edges[0]
+                      ? `url(${node.images.edges[0].node.url})`
+                      : "none",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    flexShrink: 0,
+                  }}
+                />
+                <div>
+                  <p
+                    style={{
+                      fontSize: "14px",
+                      fontWeight: 500,
+                      margin: "0 0 2px",
+                    }}
+                  >
+                    {node.title}
+                  </p>
+                  <p style={{ fontSize: "12px", color: "#999", margin: 0 }}>
+                    {node.handle}
+                  </p>
+                </div>
                 <p
                   style={{
                     fontSize: "14px",
                     fontWeight: 500,
-                    margin: "0 0 2px",
+                    textAlign: "right",
+                    margin: 0,
                   }}
                 >
-                  {node.title}
+                  {node.priceRange.minVariantPrice.amount}{" "}
+                  {node.priceRange.minVariantPrice.currencyCode}
                 </p>
-                <p style={{ fontSize: "12px", color: "#999", margin: 0 }}>
-                  {node.handle}
+                <p
+                  style={{
+                    fontSize: "14px",
+                    textAlign: "right",
+                    margin: 0,
+                    color:
+                      qty === 0
+                        ? "#e53e3e"
+                        : qty == null
+                        ? "#999"
+                        : "inherit",
+                  }}
+                >
+                  {qty == null ? "—" : qty === 0 ? "Out" : qty}
                 </p>
               </div>
-              <p style={{ fontSize: "14px", fontWeight: 500 }}>
-                {node.priceRange.minVariantPrice.amount}{" "}
-                {node.priceRange.minVariantPrice.currencyCode}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </main>

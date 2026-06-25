@@ -29,7 +29,7 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json();
-  const { title, description, price, imageBase64 } = body;
+  const { title, description, price, imageBase64, inventory } = body;
 
   if (!title || !price) {
     return Response.json(
@@ -45,6 +45,7 @@ export async function POST(request: Request) {
       price: String(price),
       vendor: vendorName,
       imageBase64,
+      inventory: inventory !== undefined ? Number(inventory) : undefined,
     });
     return Response.json({ product });
   } catch (err: any) {

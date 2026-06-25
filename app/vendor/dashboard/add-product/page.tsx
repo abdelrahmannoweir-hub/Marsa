@@ -10,6 +10,7 @@ export default function AddProduct() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [inventory, setInventory] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -72,7 +73,13 @@ export default function AddProduct() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${session.access_token}`,
         },
-        body: JSON.stringify({ title, description, price, imageBase64 }),
+        body: JSON.stringify({
+          title,
+          description,
+          price,
+          imageBase64,
+          inventory: inventory !== "" ? Number(inventory) : undefined,
+        }),
       });
 
       const data = await res.json();
@@ -93,6 +100,7 @@ export default function AddProduct() {
     setPrice("");
     setImageFile(null);
     setImagePreview(null);
+    setInventory("");
     setError("");
   }
 
@@ -286,7 +294,7 @@ export default function AddProduct() {
         </div>
 
         {/* Price */}
-        <div style={{ marginBottom: "28px" }}>
+        <div style={{ marginBottom: "16px" }}>
           <label
             style={{
               display: "block",
@@ -305,6 +313,29 @@ export default function AddProduct() {
             min="0"
             step="0.01"
             placeholder="0.00"
+            style={inputStyle}
+          />
+        </div>
+
+        {/* Inventory */}
+        <div style={{ marginBottom: "28px" }}>
+          <label
+            style={{
+              display: "block",
+              fontSize: "13px",
+              marginBottom: "6px",
+              color: "#444",
+            }}
+          >
+            Initial Stock Quantity
+          </label>
+          <input
+            type="number"
+            value={inventory}
+            onChange={(e) => setInventory(e.target.value)}
+            min="0"
+            step="1"
+            placeholder="Leave blank to skip inventory tracking"
             style={inputStyle}
           />
         </div>
