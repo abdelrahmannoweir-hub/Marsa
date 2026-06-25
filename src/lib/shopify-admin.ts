@@ -75,7 +75,9 @@ export async function createShopifyProduct({
     variants: [
       {
         price,
-        ...(inventory !== undefined ? { inventory_management: "shopify" } : {}),
+        ...(inventory !== undefined
+          ? { inventory_management: "shopify", inventory_policy: "deny" }
+          : {}),
       },
     ],
   };
