@@ -1346,21 +1346,160 @@ export default async function Home() {
         <FaqAccordion />
       </section>
 
-      {/* B2B BAND */}
+      {/* TRADE PROGRAM BAND */}
       <section style={{
-        background: "var(--terracotta)", padding: "28px 32px", display: "flex",
-        justifyContent: "space-between", alignItems: "center", color: "white"
+        background: BRAND.colors.terracotta,
+        padding: "72px 40px",
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+        gap: "48px",
+        alignItems: "center",
       }}>
+
+        {/* Left — copy */}
         <div>
-          <div style={{ fontSize: "15px", fontWeight: 500 }}>For design professionals</div>
-          <div style={{ fontSize: "12px", opacity: 0.85 }}>Trade pricing · Bundle builder · Project tools</div>
+          <p style={{
+            fontSize: "11px",
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            color: "rgba(255,255,255,0.65)",
+            fontWeight: 500,
+            margin: "0 0 14px",
+          }}>
+            For design professionals
+          </p>
+          <h2 style={{
+            fontSize: "clamp(28px, 2.8vw, 42px)",
+            fontWeight: 700,
+            color: "white",
+            margin: "0 0 16px",
+            letterSpacing: "-0.02em",
+            lineHeight: 1.15,
+          }}>
+            The Marsa Trade Program
+          </h2>
+          <p style={{
+            fontSize: "15px",
+            color: "rgba(255,255,255,0.75)",
+            lineHeight: 1.7,
+            margin: "0 0 36px",
+            maxWidth: "400px",
+          }}>
+            Interior designers and architects get exclusive access to trade pricing, a dedicated bundle builder, and a direct line to our vendor network.
+          </p>
+          <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+            <Link
+              href="/designer/apply"
+              style={{
+                background: "white",
+                color: BRAND.colors.terracotta,
+                textDecoration: "none",
+                padding: "14px 28px",
+                borderRadius: "6px",
+                fontSize: "13px",
+                fontWeight: 600,
+                letterSpacing: "0.02em",
+              }}
+            >
+              Apply for trade access
+            </Link>
+            <Link
+              href="/designer/login"
+              style={{
+                background: "transparent",
+                color: "white",
+                textDecoration: "none",
+                padding: "14px 28px",
+                border: "1.5px solid rgba(255,255,255,0.45)",
+                borderRadius: "6px",
+                fontSize: "13px",
+                fontWeight: 500,
+                letterSpacing: "0.02em",
+              }}
+            >
+              Sign in to trade portal
+            </Link>
+          </div>
         </div>
-        <button style={{
-          background: "white", color: "var(--terracotta-dark)", border: "none",
-          padding: "10px 20px", borderRadius: "6px", fontSize: "13px", fontWeight: 500, cursor: "pointer"
-        }}>
-          Apply for trade
-        </button>
+
+        {/* Right — benefit cards */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+          {[
+            {
+              title: "Up to 20% off",
+              desc: "Exclusive trade pricing on the full catalogue",
+              icon: (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                  <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                  <path d="M2 17l10 5 10-5" />
+                  <path d="M2 12l10 5 10-5" />
+                </svg>
+              ),
+            },
+            {
+              title: "Bundle builder",
+              desc: "Build full-room quotes in minutes",
+              icon: (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                  <rect x="3" y="3" width="7" height="7" />
+                  <rect x="14" y="3" width="7" height="7" />
+                  <rect x="3" y="14" width="7" height="7" />
+                  <rect x="14" y="14" width="7" height="7" />
+                </svg>
+              ),
+            },
+            {
+              title: "Priority support",
+              desc: "Dedicated account manager for large projects",
+              icon: (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                </svg>
+              ),
+            },
+            {
+              title: "Tabby & Tamara",
+              desc: "Flexible payment terms for large orders",
+              icon: (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+                  <line x1="1" y1="10" x2="23" y2="10" />
+                </svg>
+              ),
+            },
+          ].map(({ title, desc, icon }) => (
+            <div
+              key={title}
+              style={{
+                background: "rgba(255,255,255,0.12)",
+                border: "1px solid rgba(255,255,255,0.18)",
+                borderRadius: "10px",
+                padding: "20px",
+              }}
+            >
+              <div style={{ color: "rgba(255,255,255,0.85)", marginBottom: "10px" }}>
+                {icon}
+              </div>
+              <p style={{
+                fontSize: "14px",
+                fontWeight: 600,
+                color: "white",
+                margin: "0 0 4px",
+              }}>
+                {title}
+              </p>
+              <p style={{
+                fontSize: "12px",
+                color: "rgba(255,255,255,0.65)",
+                margin: 0,
+                lineHeight: 1.5,
+              }}>
+                {desc}
+              </p>
+            </div>
+          ))}
+        </div>
+
       </section>
 
       {/* FOOTER */}
