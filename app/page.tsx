@@ -1026,21 +1026,159 @@ export default async function Home() {
         )}
       </section>
 
-      {/* AI QUIZ BAND */}
+      {/* AI STYLE QUIZ BAND */}
       <section style={{
-        background: "var(--dark)", padding: "32px", display: "flex",
-        justifyContent: "space-between", alignItems: "center", color: "#F2EDE4"
+        background: BRAND.colors.dark,
+        padding: "72px 40px",
+        display: "grid",
+        gridTemplateColumns: "1fr auto",
+        gap: "40px",
+        alignItems: "center",
       }}>
+        {/* Left — copy */}
         <div>
-          <div style={{ fontSize: "16px", fontWeight: 500 }}>AI Style Quiz</div>
-          <div style={{ fontSize: "12px", opacity: 0.6 }}>Find your aesthetic in 6 questions</div>
+          <div style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "8px",
+            marginBottom: "20px",
+          }}>
+            <span style={{
+              background: BRAND.colors.terracotta,
+              color: "white",
+              fontSize: "10px",
+              fontWeight: 700,
+              letterSpacing: "0.1em",
+              padding: "3px 9px",
+              borderRadius: "4px",
+            }}>
+              NEW
+            </span>
+            <span style={{
+              fontSize: "12px",
+              color: BRAND.colors.terracotta,
+              fontWeight: 500,
+              letterSpacing: "0.06em",
+            }}>
+              Powered by AI
+            </span>
+          </div>
+
+          <h2 style={{
+            fontSize: "clamp(28px, 3vw, 44px)",
+            fontWeight: 700,
+            color: "#F2EDE4",
+            margin: "0 0 14px",
+            letterSpacing: "-0.02em",
+            lineHeight: 1.15,
+          }}>
+            Find your style in 4 questions.
+          </h2>
+
+          <p style={{
+            fontSize: "15px",
+            color: "rgba(242,237,228,0.55)",
+            margin: "0 0 36px",
+            lineHeight: 1.65,
+            maxWidth: "480px",
+          }}>
+            Tell us how you like to live and we'll match you with furniture and accessories that actually feel like you.
+          </p>
+
+          {/* Stats row */}
+          <div style={{ display: "flex", gap: "40px" }}>
+            {[
+              { num: "4", label: "Questions" },
+              { num: "2 min", label: "Average time" },
+              { num: "100%", label: "Personalised" },
+            ].map(({ num, label }) => (
+              <div key={label}>
+                <p style={{
+                  fontSize: "22px",
+                  fontWeight: 700,
+                  color: "#F2EDE4",
+                  margin: "0 0 2px",
+                }}>
+                  {num}
+                </p>
+                <p style={{
+                  fontSize: "12px",
+                  color: "rgba(242,237,228,0.45)",
+                  margin: 0,
+                  letterSpacing: "0.04em",
+                }}>
+                  {label}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
-        <button style={{
-          background: "var(--terracotta)", color: "white", border: "none",
-          padding: "10px 20px", borderRadius: "6px", fontSize: "13px", cursor: "pointer"
+
+        {/* Right — CTA card */}
+        <div style={{
+          background: "rgba(255,255,255,0.05)",
+          border: "1px solid rgba(255,255,255,0.1)",
+          borderRadius: "16px",
+          padding: "36px 32px",
+          width: "280px",
+          textAlign: "center",
         }}>
-          Take the quiz →
-        </button>
+          {/* Quiz preview dots */}
+          <div style={{
+            display: "flex",
+            gap: "8px",
+            justifyContent: "center",
+            marginBottom: "24px",
+          }}>
+            {["Style", "Colour", "Material", "Atmosphere"].map((step, i) => (
+              <div key={step} style={{
+                width: i === 0 ? "24px" : "8px",
+                height: "8px",
+                borderRadius: "99px",
+                background: i === 0
+                  ? BRAND.colors.terracotta
+                  : "rgba(255,255,255,0.2)",
+                transition: "width 0.3s",
+              }} />
+            ))}
+          </div>
+
+          <p style={{
+            fontSize: "13px",
+            color: "rgba(242,237,228,0.5)",
+            margin: "0 0 8px",
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
+          }}>
+            Step 1 of 4
+          </p>
+          <p style={{
+            fontSize: "17px",
+            fontWeight: 600,
+            color: "#F2EDE4",
+            margin: "0 0 28px",
+            lineHeight: 1.3,
+          }}>
+            Which style speaks to you?
+          </p>
+
+          <Link
+            href="/quiz"
+            style={{
+              display: "block",
+              background: BRAND.colors.terracotta,
+              color: "white",
+              textDecoration: "none",
+              padding: "14px 24px",
+              borderRadius: "8px",
+              fontSize: "14px",
+              fontWeight: 600,
+              letterSpacing: "0.02em",
+            }}
+          >
+            Take the quiz →
+          </Link>
+        </div>
       </section>
 
       {/* B2B BAND */}
