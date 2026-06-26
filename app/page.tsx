@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getProducts } from "../src/lib/shopify";
 import { BRAND } from "../src/config/brand";
 import { SiteHeader } from "../src/components/SiteHeader";
@@ -10,41 +11,148 @@ export default async function Home() {
 
       <SiteHeader />
 
-      {/* HERO */}
-      <section style={{ display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: "420px" }}>
+      {/* CAMPAIGN HERO */}
+      <section style={{ display: "grid", gridTemplateColumns: "2fr 3fr", minHeight: "88vh" }}>
+
+        {/* Left — editorial text */}
         <div style={{
-          padding: "60px", display: "flex", flexDirection: "column",
-          justifyContent: "center", gap: "16px", borderRight: "1px solid #eee"
+          background: "#FDFAF7",
+          padding: "0 56px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          gap: "0",
         }}>
-          <div style={{ fontSize: "11px", color: "#999", letterSpacing: "0.05em" }}>
-            SAUDI &amp; EGYPTIAN BRANDS · CURATED
+          {/* Eyebrow */}
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            marginBottom: "28px",
+          }}>
+            <div style={{ width: "32px", height: "1px", background: BRAND.colors.terracotta }} />
+            <span style={{
+              fontSize: "11px",
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              color: BRAND.colors.terracotta,
+              fontWeight: 500,
+            }}>
+              New Collection · Summer 2025
+            </span>
           </div>
-          <h1 style={{ fontSize: "40px", fontWeight: 600, lineHeight: 1.2, margin: 0 }}>
+
+          {/* Headline */}
+          <h1 style={{
+            fontSize: "clamp(36px, 3.6vw, 54px)",
+            fontWeight: 700,
+            lineHeight: 1.15,
+            color: BRAND.colors.dark,
+            margin: "0 0 20px",
+            letterSpacing: "-0.02em",
+          }}>
             {BRAND.tagline_en}
           </h1>
-          <div style={{ fontSize: "18px", color: "#777", direction: "rtl", textAlign: "right" }}>
+
+          {/* Arabic subline */}
+          <p style={{
+            fontSize: "18px",
+            color: "#9A8880",
+            direction: "rtl",
+            textAlign: "right",
+            margin: "0 0 12px",
+            fontWeight: 400,
+          }}>
             {BRAND.tagline_ar}
-          </div>
-          <div style={{ display: "flex", gap: "12px", marginTop: "10px" }}>
-            <button style={{
-              background: "var(--terracotta)", color: "white", border: "none",
-              padding: "12px 24px", borderRadius: "6px", fontSize: "13px", cursor: "pointer"
-            }}>
+          </p>
+
+          {/* Description */}
+          <p style={{
+            fontSize: "14px",
+            color: "#888",
+            lineHeight: 1.65,
+            margin: "0 0 40px",
+            maxWidth: "320px",
+          }}>
+            Curated furniture and home accessories from Saudi and Egyptian designers — made to last.
+          </p>
+
+          {/* CTAs */}
+          <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+            <Link
+              href="/products"
+              style={{
+                background: BRAND.colors.terracotta,
+                color: "white",
+                textDecoration: "none",
+                padding: "14px 28px",
+                borderRadius: "6px",
+                fontSize: "13px",
+                fontWeight: 500,
+                letterSpacing: "0.02em",
+              }}
+            >
               Shop the collection
-            </button>
-            <button style={{
-              background: "transparent", border: "1px solid #ccc",
-              padding: "12px 24px", borderRadius: "6px", fontSize: "13px", cursor: "pointer"
-            }}>
-              Take the style quiz
-            </button>
+            </Link>
+            <Link
+              href="/quiz"
+              style={{
+                background: "transparent",
+                color: BRAND.colors.dark,
+                textDecoration: "none",
+                padding: "14px 28px",
+                border: `1.5px solid ${BRAND.colors.dark}`,
+                borderRadius: "6px",
+                fontSize: "13px",
+                fontWeight: 500,
+                letterSpacing: "0.02em",
+              }}
+            >
+              Take the style quiz →
+            </Link>
           </div>
         </div>
+
+        {/* Right — hero image placeholder */}
         <div style={{
-          background: "#f5f5f5", display: "flex", alignItems: "center", justifyContent: "center"
+          background: "#E8DDD5",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "8px",
+          position: "relative",
+          overflow: "hidden",
         }}>
-          <span style={{ color: "#aaa", fontSize: "13px" }}>Hero lifestyle image</span>
+          {/* Decorative grain texture feel */}
+          <div style={{
+            position: "absolute",
+            inset: 0,
+            background: "linear-gradient(135deg, #EDE5DC 0%, #D9CDBF 100%)",
+          }} />
+          <div style={{ position: "relative", textAlign: "center" }}>
+            <div style={{
+              width: "48px",
+              height: "48px",
+              border: "1.5px solid rgba(0,0,0,0.15)",
+              borderRadius: "50%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              margin: "0 auto 12px",
+            }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.25)" strokeWidth="1.5">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <polyline points="21 15 16 10 5 21" />
+              </svg>
+            </div>
+            <p style={{ color: "rgba(0,0,0,0.3)", fontSize: "12px", margin: 0, letterSpacing: "0.06em" }}>
+              Campaign lifestyle image
+            </p>
+          </div>
         </div>
+
       </section>
 
       {/* PRODUCTS FROM SHOPIFY */}
