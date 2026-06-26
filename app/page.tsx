@@ -622,6 +622,149 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* DESIGN MY HOME */}
+      <section style={{
+        background: "#F5EDE4",
+        padding: "80px 40px",
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+        gap: "64px",
+        alignItems: "center",
+      }}>
+
+        {/* Left — copy */}
+        <div>
+          {/* NEW badge */}
+          <div style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "8px",
+            marginBottom: "24px",
+          }}>
+            <span style={{
+              background: BRAND.colors.terracotta,
+              color: "white",
+              fontSize: "10px",
+              fontWeight: 700,
+              letterSpacing: "0.1em",
+              padding: "3px 9px",
+              borderRadius: "4px",
+            }}>
+              NEW
+            </span>
+            <span style={{
+              fontSize: "12px",
+              color: BRAND.colors.terracotta,
+              fontWeight: 500,
+              letterSpacing: "0.06em",
+            }}>
+              AI-powered
+            </span>
+          </div>
+
+          <h2 style={{
+            fontSize: "clamp(32px, 3.2vw, 48px)",
+            fontWeight: 700,
+            lineHeight: 1.12,
+            color: BRAND.colors.dark,
+            margin: "0 0 16px",
+            letterSpacing: "-0.02em",
+          }}>
+            Design my home.
+          </h2>
+
+          <p style={{
+            fontSize: "15px",
+            color: "#7A6A60",
+            lineHeight: 1.7,
+            margin: "0 0 36px",
+            maxWidth: "400px",
+          }}>
+            Tell us which room you want to furnish, answer a few quick questions about your taste, and we'll build a curated shortlist just for you.
+          </p>
+
+          <Link
+            href="/quiz"
+            style={{
+              display: "inline-block",
+              background: BRAND.colors.dark,
+              color: "white",
+              textDecoration: "none",
+              padding: "15px 32px",
+              borderRadius: "6px",
+              fontSize: "14px",
+              fontWeight: 500,
+              letterSpacing: "0.02em",
+            }}
+          >
+            Start designing →
+          </Link>
+        </div>
+
+        {/* Right — room type selector */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+          <p style={{
+            fontSize: "11px",
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+            color: "#9A8880",
+            margin: "0 0 4px",
+            fontWeight: 500,
+          }}>
+            Which room?
+          </p>
+
+          {[
+            { label: "Living Room", desc: "Sofas, tables, lighting & more", icon: "⬜" },
+            { label: "Bedroom",     desc: "Beds, storage & bedside essentials", icon: "⬜" },
+            { label: "Dining Room", desc: "Tables, chairs & sideboards", icon: "⬜" },
+            { label: "Home Office", desc: "Desks, shelving & task lighting", icon: "⬜" },
+          ].map(({ label, desc }) => (
+            <Link
+              key={label}
+              href="/quiz"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                background: "white",
+                border: "1.5px solid #E8DDD5",
+                borderRadius: "10px",
+                padding: "18px 22px",
+                textDecoration: "none",
+                color: "inherit",
+              }}
+            >
+              <div>
+                <p style={{
+                  fontSize: "15px",
+                  fontWeight: 600,
+                  margin: "0 0 3px",
+                  color: BRAND.colors.dark,
+                }}>
+                  {label}
+                </p>
+                <p style={{
+                  fontSize: "12px",
+                  color: "#9A8880",
+                  margin: 0,
+                }}>
+                  {desc}
+                </p>
+              </div>
+              <svg
+                width="16" height="16" viewBox="0 0 24 24"
+                fill="none" stroke={BRAND.colors.terracotta}
+                strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+              >
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </Link>
+          ))}
+        </div>
+
+      </section>
+
       {/* PRODUCTS FROM SHOPIFY */}
       <section style={{ padding: "48px 32px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
