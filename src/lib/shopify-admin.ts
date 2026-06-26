@@ -86,6 +86,8 @@ export async function createShopifyProduct({
   vendor,
   imageBase64,
   inventory,
+  tags,
+  productType,
 }: {
   title: string;
   bodyHtml: string;
@@ -93,11 +95,15 @@ export async function createShopifyProduct({
   vendor: string;
   imageBase64?: string;
   inventory?: number;
+  tags?: string[];
+  productType?: string;
 }) {
   const product: Record<string, unknown> = {
     title,
     body_html: bodyHtml,
     vendor,
+    ...(productType ? { product_type: productType } : {}),
+    ...(tags && tags.length > 0 ? { tags: tags.join(", ") } : {}),
     variants: [
       {
         price,

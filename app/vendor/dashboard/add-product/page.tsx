@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { supabase } from "../../../../src/lib/supabase";
 import { BRAND } from "../../../../src/config/brand";
+import { PRODUCT_CATEGORIES, TAG_GROUPS } from "../../../../src/config/tags";
 
 export default function AddProduct() {
   const router = useRouter();
@@ -11,6 +12,8 @@ export default function AddProduct() {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [inventory, setInventory] = useState("");
+  const [category, setCategory] = useState("");
+  const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set());
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -20,9 +23,7 @@ export default function AddProduct() {
 
   useEffect(() => {
     async function checkAuth() {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const { data: { user } } = await supabase.auth.getUser();
       if (!user || !user.user_metadata?.vendor_name) {
         router.replace("/vendor/login");
       }
@@ -39,15 +40,44 @@ export default function AddProduct() {
     reader.readAsDataURL(file);
   }
 
+  function toggleTag(tag: string) {
+    setSelectedTags((prev) => {
+      const next = new Set(prev);
+      if (next.has(tag)) next.delete(tag);
+      else next.add(tag);
+      return next;
+    });
+  }
+
+  function handleCategoryChange(newCategory: string) {
+    setCategory(newCategory);
+    // Drop tags that belong to a category-specific group being deselected
+    const leavingGroups = TAG_GROUPS.filter(
+      (g) =>
+        g.onlyForCategories &&
+        !g.onlyForCategories.includes(newCategory)
+    );
+    if (leavingGroups.length > 0) {
+      const conditionalTags = new Set(leavingGroups.flatMap((g) => g.tags));
+      setSelectedTags((prev) => {
+        const next = new Set(prev);
+        conditionalTags.forEach((t) => next.delete(t));
+        return next;
+      });
+    }
+  }
+
+  const visibleGroups = TAG_GROUPS.filter(
+    (g) => !g.onlyForCategories || g.onlyForCategories.includes(category)
+  );
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
+      const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
         router.replace("/vendor/login");
         return;
@@ -55,7 +85,6 @@ export default function AddProduct() {
 
       let imageBase64: string | undefined;
       if (imageFile) {
-        // Read as data URL then strip the "data:...;base64," prefix
         imageBase64 = await new Promise<string>((resolve, reject) => {
           const reader = new FileReader();
           reader.onload = (ev) => {
@@ -79,6 +108,8 @@ export default function AddProduct() {
           price,
           imageBase64,
           inventory: inventory !== "" ? Number(inventory) : undefined,
+          category: category || undefined,
+          tags: selectedTags.size > 0 ? Array.from(selectedTags) : undefined,
         }),
       });
 
@@ -101,6 +132,8 @@ export default function AddProduct() {
     setImageFile(null);
     setImagePreview(null);
     setInventory("");
+    setCategory("");
+    setSelectedTags(new Set());
     setError("");
   }
 
@@ -135,17 +168,13 @@ export default function AddProduct() {
         >
           ✓
         </div>
-        <h2
-          style={{ fontSize: "20px", fontWeight: 600, marginBottom: "12px" }}
-        >
+        <h2 style={{ fontSize: "20px", fontWeight: 600, marginBottom: "12px" }}>
           Product created!
         </h2>
         <p style={{ color: "#666", marginBottom: "32px" }}>
           Your product is now live on the store.
         </p>
-        <div
-          style={{ display: "flex", gap: "12px", justifyContent: "center" }}
-        >
+        <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
           <Link
             href="/vendor/dashboard"
             style={{
@@ -194,9 +223,7 @@ export default function AddProduct() {
         >
           ← Back to Dashboard
         </Link>
-        <h1
-          style={{ fontSize: "22px", fontWeight: 600, margin: "8px 0 0" }}
-        >
+        <h1 style={{ fontSize: "22px", fontWeight: 600, margin: "8px 0 0" }}>
           Add Product
         </h1>
       </div>
@@ -272,6 +299,32 @@ export default function AddProduct() {
           />
         </div>
 
+        {/* Category */}
+        <div style={{ marginBottom: "16px" }}>
+          <label
+            style={{
+              display: "block",
+              fontSize: "13px",
+              marginBottom: "6px",
+              color: "#444",
+            }}
+          >
+            Category
+          </label>
+          <select
+            value={category}
+            onChange={(e) => handleCategoryChange(e.target.value)}
+            style={{ ...inputStyle, background: "white", cursor: "pointer" }}
+          >
+            <option value="">Select a category…</option>
+            {PRODUCT_CATEGORIES.map((c) => (
+              <option key={c} value={c}>
+                {c}
+              </option>
+            ))}
+          </select>
+        </div>
+
         {/* Description */}
         <div style={{ marginBottom: "16px" }}>
           <label
@@ -318,7 +371,7 @@ export default function AddProduct() {
         </div>
 
         {/* Inventory */}
-        <div style={{ marginBottom: "28px" }}>
+        <div style={{ marginBottom: "32px" }}>
           <label
             style={{
               display: "block",
@@ -338,6 +391,119 @@ export default function AddProduct() {
             placeholder="Leave blank to skip inventory tracking"
             style={inputStyle}
           />
+        </div>
+
+        {/* ── Style Tags ── */}
+        <div
+          style={{
+            borderTop: "1px solid #eee",
+            paddingTop: "28px",
+            marginBottom: "28px",
+          }}
+        >
+          <div style={{ marginBottom: "20px" }}>
+            <h2
+              style={{ fontSize: "15px", fontWeight: 600, margin: "0 0 4px" }}
+            >
+              Style Tags
+            </h2>
+            <p style={{ fontSize: "12px", color: "#999", margin: 0 }}>
+              Help customers discover this product through style matching. Select
+              all that apply.
+            </p>
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+            {visibleGroups.map((group) => (
+              <div key={group.group}>
+                <p
+                  style={{
+                    fontSize: "11px",
+                    fontWeight: 600,
+                    color: "#555",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.06em",
+                    margin: "0 0 10px",
+                  }}
+                >
+                  {group.group}
+                  {group.onlyForCategories && (
+                    <span
+                      style={{
+                        marginLeft: "6px",
+                        fontWeight: 400,
+                        textTransform: "none",
+                        letterSpacing: 0,
+                        color: BRAND.colors.terracotta,
+                        fontSize: "11px",
+                      }}
+                    >
+                      — {category} only
+                    </span>
+                  )}
+                </p>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(3, 1fr)",
+                    gap: "8px",
+                  }}
+                >
+                  {group.tags.map((tag) => {
+                    const checked = selectedTags.has(tag);
+                    return (
+                      <label
+                        key={tag}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "7px",
+                          padding: "8px 10px",
+                          border: `1px solid ${
+                            checked ? BRAND.colors.terracotta : "#e5e5e5"
+                          }`,
+                          borderRadius: "6px",
+                          background: checked ? "#FFF5F2" : "white",
+                          cursor: "pointer",
+                          fontSize: "13px",
+                          color: checked ? BRAND.colors.terracotta : "#444",
+                          userSelect: "none",
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={() => toggleTag(tag)}
+                          style={{ accentColor: BRAND.colors.terracotta, margin: 0 }}
+                        />
+                        {tag}
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {selectedTags.size > 0 && (
+            <div
+              style={{
+                marginTop: "16px",
+                padding: "10px 14px",
+                background: "#fafafa",
+                border: "1px solid #eee",
+                borderRadius: "6px",
+                fontSize: "12px",
+                color: "#666",
+              }}
+            >
+              <span style={{ fontWeight: 500 }}>
+                {selectedTags.size} tag{selectedTags.size !== 1 ? "s" : ""}{" "}
+                selected:
+              </span>{" "}
+              {Array.from(selectedTags).join(", ")}
+            </div>
+          )}
         </div>
 
         {error && (
