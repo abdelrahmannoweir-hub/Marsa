@@ -1504,11 +1504,216 @@ export default async function Home() {
 
       {/* FOOTER */}
       <footer style={{
-        padding: "24px 32px", display: "flex", justifyContent: "space-between",
-        borderTop: "1px solid #eee", fontSize: "12px", color: "#999"
+        background: BRAND.colors.dark,
+        color: "rgba(255,255,255,0.55)",
+        fontFamily: "sans-serif",
       }}>
-        <span>© {BRAND.name} · Riyadh, Saudi Arabia</span>
-        <span>Instagram · Snapchat · عربي</span>
+
+        {/* Main footer grid */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "2fr 1fr 1fr 1fr",
+          gap: "48px",
+          padding: "64px 40px 48px",
+          borderBottom: "1px solid rgba(255,255,255,0.08)",
+        }}>
+
+          {/* Brand column */}
+          <div>
+            <p style={{
+              fontSize: "22px",
+              fontWeight: 700,
+              color: "white",
+              letterSpacing: "0.06em",
+              margin: "0 0 14px",
+            }}>
+              {BRAND.name}
+            </p>
+            <p style={{
+              fontSize: "13px",
+              lineHeight: 1.7,
+              margin: "0 0 24px",
+              maxWidth: "260px",
+            }}>
+              Curated furniture and home accessories from Saudi and Egyptian designers — made to last.
+            </p>
+            {/* Social links */}
+            <div style={{ display: "flex", gap: "12px" }}>
+              {[
+                {
+                  label: "Instagram",
+                  icon: (
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                      <rect x="2" y="2" width="20" height="20" rx="5" />
+                      <circle cx="12" cy="12" r="4" />
+                      <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" />
+                    </svg>
+                  ),
+                },
+                {
+                  label: "Snapchat",
+                  icon: (
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                      <path d="M12 2C8 2 5 5 5 9v1c0 1-1 2-2 2.5.5.5 1.5.5 2 .5-.5 1-2 2-2 3 0 .5.5 1 2 1 .5 0 1 .5 2 1 .5.5 1.5 1 3 1s2.5-.5 3-1c1-.5 1.5-1 2-1 1.5 0 2-.5 2-1 0-1-1.5-2-2-3 .5 0 1.5 0 2-.5C19 12 18 11 18 10V9c0-4-3-7-6-7z" />
+                    </svg>
+                  ),
+                },
+                {
+                  label: "TikTok",
+                  icon: (
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                      <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
+                    </svg>
+                  ),
+                },
+              ].map(({ label, icon }) => (
+                <a
+                  key={label}
+                  href="#"
+                  aria-label={label}
+                  style={{
+                    width: "34px",
+                    height: "34px",
+                    borderRadius: "50%",
+                    border: "1px solid rgba(255,255,255,0.15)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "rgba(255,255,255,0.55)",
+                    textDecoration: "none",
+                  }}
+                >
+                  {icon}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Shop column */}
+          <div>
+            <p style={{
+              fontSize: "11px",
+              fontWeight: 700,
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              color: "rgba(255,255,255,0.35)",
+              margin: "0 0 18px",
+            }}>
+              Shop
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "11px" }}>
+              {["New Arrivals", "Best Sellers", "Furniture", "Lighting", "Carpets", "Beddings", "Sale"].map((item) => (
+                <Link
+                  key={item}
+                  href="/products"
+                  style={{
+                    fontSize: "13px",
+                    color: "rgba(255,255,255,0.55)",
+                    textDecoration: "none",
+                  }}
+                >
+                  {item}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Explore column */}
+          <div>
+            <p style={{
+              fontSize: "11px",
+              fontWeight: 700,
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              color: "rgba(255,255,255,0.35)",
+              margin: "0 0 18px",
+            }}>
+              Explore
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "11px" }}>
+              {[
+                { label: "Style Quiz", href: "/quiz" },
+                { label: "Designers", href: "/products" },
+                { label: "Inspiration", href: "/" },
+                { label: "Shop by Room", href: "/products" },
+                { label: "Trade Program", href: "/designer/apply" },
+                { label: "Become a Vendor", href: "/vendor/login" },
+              ].map(({ label, href }) => (
+                <Link
+                  key={label}
+                  href={href}
+                  style={{
+                    fontSize: "13px",
+                    color: "rgba(255,255,255,0.55)",
+                    textDecoration: "none",
+                  }}
+                >
+                  {label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Help column */}
+          <div>
+            <p style={{
+              fontSize: "11px",
+              fontWeight: 700,
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              color: "rgba(255,255,255,0.35)",
+              margin: "0 0 18px",
+            }}>
+              Help
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "11px" }}>
+              {["Delivery & Returns", "Payment Options", "Track My Order", "Contact Us", "FAQs", "Privacy Policy", "Terms of Service"].map((item) => (
+                <Link
+                  key={item}
+                  href="/"
+                  style={{
+                    fontSize: "13px",
+                    color: "rgba(255,255,255,0.55)",
+                    textDecoration: "none",
+                  }}
+                >
+                  {item}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+        </div>
+
+        {/* Bottom bar */}
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "20px 40px",
+          fontSize: "12px",
+          flexWrap: "wrap",
+          gap: "12px",
+        }}>
+          <span>© 2025 {BRAND.name}. All rights reserved. · Riyadh, Saudi Arabia</span>
+          <div style={{ display: "flex", gap: "24px", alignItems: "center" }}>
+            {/* Payment icons text */}
+            <span style={{ fontSize: "11px", letterSpacing: "0.04em" }}>
+              Visa · Mastercard · Mada · Tabby · Tamara · Apple Pay
+            </span>
+            <span style={{
+              border: "1px solid rgba(255,255,255,0.2)",
+              borderRadius: "4px",
+              padding: "3px 10px",
+              fontSize: "11px",
+              color: "rgba(255,255,255,0.5)",
+              letterSpacing: "0.04em",
+            }}>
+              عربي
+            </span>
+          </div>
+        </div>
+
       </footer>
 
     </main>
