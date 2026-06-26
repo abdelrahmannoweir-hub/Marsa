@@ -155,6 +155,187 @@ export default async function Home() {
 
       </section>
 
+      {/* EDITORIAL MOOD BLOCKS */}
+      <section style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
+
+        {/* Block 1 — Dining */}
+        <div style={{
+          position: "relative",
+          height: "68vh",
+          background: "linear-gradient(160deg, #C9B5A0 0%, #A8917A 100%)",
+          overflow: "hidden",
+        }}>
+          {/* Image placeholder icon */}
+          <div style={{
+            position: "absolute",
+            inset: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}>
+            <div style={{ textAlign: "center", opacity: 0.25 }}>
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.2">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <polyline points="21 15 16 10 5 21" />
+              </svg>
+              <p style={{ color: "white", fontSize: "11px", margin: "8px 0 0", letterSpacing: "0.06em" }}>
+                Dining mood image
+              </p>
+            </div>
+          </div>
+
+          {/* Gradient scrim */}
+          <div style={{
+            position: "absolute",
+            inset: 0,
+            background: "linear-gradient(to top, rgba(26,22,20,0.75) 0%, rgba(26,22,20,0.1) 55%, transparent 100%)",
+          }} />
+
+          {/* Text */}
+          <div style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            padding: "36px 40px",
+            color: "white",
+          }}>
+            <p style={{
+              fontSize: "11px",
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              opacity: 0.7,
+              margin: "0 0 10px",
+              fontWeight: 500,
+            }}>
+              Dining
+            </p>
+            <h2 style={{
+              fontSize: "clamp(26px, 2.8vw, 40px)",
+              fontWeight: 700,
+              lineHeight: 1.15,
+              margin: "0 0 10px",
+              letterSpacing: "-0.02em",
+            }}>
+              Lingering is encouraged.
+            </h2>
+            <p style={{
+              fontSize: "13px",
+              opacity: 0.75,
+              margin: "0 0 22px",
+              lineHeight: 1.5,
+              maxWidth: "280px",
+            }}>
+              Dining spaces that make every meal an occasion worth staying for.
+            </p>
+            <Link
+              href="/products"
+              style={{
+                color: "white",
+                fontSize: "13px",
+                fontWeight: 500,
+                textDecoration: "none",
+                letterSpacing: "0.04em",
+                borderBottom: "1px solid rgba(255,255,255,0.5)",
+                paddingBottom: "2px",
+              }}
+            >
+              Shop dining →
+            </Link>
+          </div>
+        </div>
+
+        {/* Block 2 — Living */}
+        <div style={{
+          position: "relative",
+          height: "68vh",
+          background: "linear-gradient(160deg, #B5C0B8 0%, #8D9E94 100%)",
+          overflow: "hidden",
+        }}>
+          {/* Image placeholder icon */}
+          <div style={{
+            position: "absolute",
+            inset: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}>
+            <div style={{ textAlign: "center", opacity: 0.25 }}>
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.2">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <polyline points="21 15 16 10 5 21" />
+              </svg>
+              <p style={{ color: "white", fontSize: "11px", margin: "8px 0 0", letterSpacing: "0.06em" }}>
+                Living room mood image
+              </p>
+            </div>
+          </div>
+
+          {/* Gradient scrim */}
+          <div style={{
+            position: "absolute",
+            inset: 0,
+            background: "linear-gradient(to top, rgba(26,22,20,0.75) 0%, rgba(26,22,20,0.1) 55%, transparent 100%)",
+          }} />
+
+          {/* Text */}
+          <div style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            padding: "36px 40px",
+            color: "white",
+          }}>
+            <p style={{
+              fontSize: "11px",
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              opacity: 0.7,
+              margin: "0 0 10px",
+              fontWeight: 500,
+            }}>
+              Living Room
+            </p>
+            <h2 style={{
+              fontSize: "clamp(26px, 2.8vw, 40px)",
+              fontWeight: 700,
+              lineHeight: 1.15,
+              margin: "0 0 10px",
+              letterSpacing: "-0.02em",
+            }}>
+              Just, relax.
+            </h2>
+            <p style={{
+              fontSize: "13px",
+              opacity: 0.75,
+              margin: "0 0 22px",
+              lineHeight: 1.5,
+              maxWidth: "280px",
+            }}>
+              Living rooms designed for real life — and the rare afternoon with nowhere to be.
+            </p>
+            <Link
+              href="/products"
+              style={{
+                color: "white",
+                fontSize: "13px",
+                fontWeight: 500,
+                textDecoration: "none",
+                letterSpacing: "0.04em",
+                borderBottom: "1px solid rgba(255,255,255,0.5)",
+                paddingBottom: "2px",
+              }}
+            >
+              Shop living →
+            </Link>
+          </div>
+        </div>
+
+      </section>
+
       {/* PRODUCTS FROM SHOPIFY */}
       <section style={{ padding: "48px 32px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
