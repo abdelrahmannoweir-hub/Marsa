@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getProducts } from "../src/lib/shopify";
 import { BRAND } from "../src/config/brand";
 import { SiteHeader } from "../src/components/SiteHeader";
+import { FaqAccordion } from "../src/components/FaqAccordion";
 
 export default async function Home() {
   const products = await getProducts();
@@ -1317,6 +1318,32 @@ export default async function Home() {
           </a>
         </div>
 
+      </section>
+
+      {/* FAQ */}
+      <section style={{ background: "#FDFAF7", padding: "80px 40px" }}>
+        <div style={{ textAlign: "center", marginBottom: "52px" }}>
+          <p style={{
+            fontSize: "11px",
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            color: BRAND.colors.terracotta,
+            fontWeight: 500,
+            margin: "0 0 10px",
+          }}>
+            Got questions?
+          </p>
+          <h2 style={{
+            fontSize: "clamp(26px, 2.6vw, 36px)",
+            fontWeight: 700,
+            color: BRAND.colors.dark,
+            margin: 0,
+            letterSpacing: "-0.02em",
+          }}>
+            Frequently asked
+          </h2>
+        </div>
+        <FaqAccordion />
       </section>
 
       {/* B2B BAND */}
