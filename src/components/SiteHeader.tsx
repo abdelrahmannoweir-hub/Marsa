@@ -2,6 +2,7 @@
 import { useState, useRef } from "react";
 import Link from "next/link";
 import { BRAND } from "../config/brand";
+import { ROOM_CATEGORIES } from "../config/tags";
 
 // ── Icons ────────────────────────────────────────────────────────────────────
 
@@ -32,142 +33,83 @@ function BagIcon() {
   );
 }
 
-// ── Furniture dropdown items ──────────────────────────────────────────────────
+// ── Data ─────────────────────────────────────────────────────────────────────
 
-const FURNITURE_COLS = [
-  {
-    heading: "Seating",
-    links: ["Sofas", "Armchairs", "Dining Chairs", "Ottomans & Poufs"],
-  },
-  {
-    heading: "Tables",
-    links: ["Dining Tables", "Coffee Tables", "Side Tables", "Desks"],
-  },
-  {
-    heading: "Storage",
-    links: ["Sideboards", "Shelving", "Wardrobes", "Cabinets"],
-  },
-  {
-    heading: "Bedroom",
-    links: ["Beds", "Headboards", "Bedside Tables", "Dressers"],
-  },
-];
+// Furniture rooms exclude Lighting and Rugs — those get their own nav items
+const FURNITURE_ROOMS = ROOM_CATEGORIES.filter(
+  (r) => r.slug !== "lighting" && r.slug !== "rugs"
+);
+const LIGHTING_ROOM = ROOM_CATEGORIES.find((r) => r.slug === "lighting")!;
+const RUGS_ROOM = ROOM_CATEGORIES.find((r) => r.slug === "rugs")!;
 
-// ── Nav definition ────────────────────────────────────────────────────────────
+type NavItem = {
+  label: string;
+  href: string;
+  sale?: boolean;
+  badge?: boolean;
+  dropdown?: string;
+};
 
-const NAV = [
+const NAV: NavItem[] = [
   { label: "Sale", href: "/products", sale: true },
-  { label: "New", href: "/products", badge: "New" },
-  { label: "Furniture", href: "/products", dropdown: true },
-  { label: "Lighting", href: "/products" },
-  { label: "Carpets", href: "/products" },
+  { label: "New", href: "/products", badge: true },
+  { label: "Furniture", href: "/products", dropdown: "furniture" },
+  { label: "Lighting", href: "/products", dropdown: "lighting" },
+  { label: "Rugs", href: "/products", dropdown: "rugs" },
   { label: "Beddings", href: "/products" },
   { label: "Fabrics", href: "/products" },
   { label: "Accessories", href: "/products" },
   { label: "Designers", href: "/products" },
   { label: "Inspiration", href: "/products" },
   { label: "Trade Program", href: "/designer/apply" },
-] as const;
+];
 
 // ── Component ────────────────────────────────────────────────────────────────
 
 export function SiteHeader() {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  function openDropdown() {
+  function openPanel(name: string) {
     if (closeTimer.current) clearTimeout(closeTimer.current);
-    setDropdownOpen(true);
+    setOpenDropdown(name);
   }
 
   function scheduleClose() {
-    closeTimer.current = setTimeout(() => setDropdownOpen(false), 120);
+    closeTimer.current = setTimeout(() => setOpenDropdown(null), 120);
+  }
+
+  function hoverLink(e: React.MouseEvent, enter: boolean) {
+    (e.currentTarget as HTMLElement).style.color = enter
+      ? BRAND.colors.terracotta
+      : BRAND.colors.dark;
   }
 
   return (
     <div style={{ position: "sticky", top: 0, zIndex: 100 }}>
 
       {/* ── 1. Promo strip ─────────────────────────────────────────────────── */}
-      <div
-        style={{
-          background: BRAND.colors.dark,
-          color: "white",
-          textAlign: "center",
-          padding: "9px 24px",
-          fontSize: "12px",
-          letterSpacing: "0.04em",
-        }}
-      >
+      <div style={{ background: BRAND.colors.dark, color: "white", textAlign: "center", padding: "9px 24px", fontSize: "12px", letterSpacing: "0.04em" }}>
         Free delivery over SAR 1,500&nbsp;&nbsp;·&nbsp;&nbsp;Split payments with Tabby &amp; Tamara
       </div>
 
       {/* ── 2. Header bar ──────────────────────────────────────────────────── */}
-      <header
-        style={{
-          background: "white",
-          borderBottom: "1px solid #eee",
-          padding: "0 40px",
-          height: "60px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        {/* Logo */}
-        <Link
-          href="/"
-          style={{
-            fontWeight: 700,
-            fontSize: "22px",
-            color: BRAND.colors.dark,
-            textDecoration: "none",
-            letterSpacing: "0.06em",
-          }}
-        >
+      <header style={{ background: "white", borderBottom: "1px solid #eee", padding: "0 40px", height: "60px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <Link href="/" style={{ fontWeight: 700, fontSize: "22px", color: BRAND.colors.dark, textDecoration: "none", letterSpacing: "0.06em" }}>
           {BRAND.name}
         </Link>
 
-        {/* Right icons */}
         <div style={{ display: "flex", alignItems: "center", gap: "20px", color: BRAND.colors.dark }}>
-          {/* Language */}
-          <button
-            style={{
-              border: "1px solid #ddd",
-              background: "transparent",
-              padding: "4px 10px",
-              borderRadius: "4px",
-              fontSize: "12px",
-              cursor: "pointer",
-              color: BRAND.colors.dark,
-              letterSpacing: "0.03em",
-            }}
-          >
+          <button style={{ border: "1px solid #ddd", background: "transparent", padding: "4px 10px", borderRadius: "4px", fontSize: "12px", cursor: "pointer", color: BRAND.colors.dark, letterSpacing: "0.03em" }}>
             EN&nbsp;|&nbsp;ع
           </button>
-
-          {/* Wishlist */}
-          <button
-            aria-label="Wishlist"
-            style={{ background: "none", border: "none", cursor: "pointer", color: BRAND.colors.dark, padding: 0, display: "flex" }}
-          >
+          <button aria-label="Wishlist" style={{ background: "none", border: "none", cursor: "pointer", color: BRAND.colors.dark, padding: 0, display: "flex" }}>
             <HeartIcon />
           </button>
-
-          {/* Account */}
-          <Link
-            href="/vendor/login"
-            aria-label="Account"
-            style={{ color: BRAND.colors.dark, display: "flex" }}
-          >
+          <Link href="/vendor/login" aria-label="Account" style={{ color: BRAND.colors.dark, display: "flex" }}>
             <UserIcon />
           </Link>
-
-          {/* Cart */}
-          <Link
-            href="/cart"
-            aria-label="Cart"
-            style={{ color: BRAND.colors.dark, display: "flex", position: "relative" }}
-          >
+          <Link href="/cart" aria-label="Cart" style={{ color: BRAND.colors.dark, display: "flex", position: "relative" }}>
             <BagIcon />
           </Link>
         </div>
@@ -175,150 +117,145 @@ export function SiteHeader() {
 
       {/* ── 3. Nav bar ─────────────────────────────────────────────────────── */}
       <nav
-        style={{
-          background: "white",
-          borderBottom: "1px solid #eee",
-          padding: "0 40px",
-          display: "flex",
-          alignItems: "stretch",
-          overflowX: "auto",
-          scrollbarWidth: "none",
-        }}
+        style={{ background: "white", borderBottom: "1px solid #eee", padding: "0 40px", display: "flex", alignItems: "stretch", overflowX: "auto", scrollbarWidth: "none" }}
+        onMouseLeave={scheduleClose}
       >
         {NAV.map((item) => {
-          const isFurniture = "dropdown" in item && item.dropdown;
+          const hasDropdown = !!item.dropdown;
+          const isOpen = hasDropdown && openDropdown === item.dropdown;
+          const isCompact = item.dropdown === "lighting" || item.dropdown === "rugs";
+          const compactRoom =
+            item.dropdown === "lighting" ? LIGHTING_ROOM
+            : item.dropdown === "rugs" ? RUGS_ROOM
+            : null;
+
           return (
             <div
               key={item.label}
               style={{ position: "relative" }}
-              onMouseEnter={isFurniture ? openDropdown : undefined}
-              onMouseLeave={isFurniture ? scheduleClose : undefined}
+              onMouseEnter={hasDropdown ? () => openPanel(item.dropdown!) : undefined}
             >
               <Link
                 href={item.href}
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "5px",
-                  padding: "14px 14px",
-                  fontSize: "13px",
-                  fontWeight: 400,
-                  color: "sale" in item && item.sale ? BRAND.colors.terracotta : BRAND.colors.dark,
-                  textDecoration: "none",
-                  whiteSpace: "nowrap",
+                  display: "flex", alignItems: "center", gap: "5px",
+                  padding: "14px 14px", fontSize: "13px", fontWeight: 400,
+                  color: item.sale ? BRAND.colors.terracotta : BRAND.colors.dark,
+                  textDecoration: "none", whiteSpace: "nowrap",
                   borderBottom: "2px solid transparent",
                   transition: "border-color 0.15s, color 0.15s",
                 }}
                 onMouseEnter={(e) => {
-                  if (!isFurniture)
-                    (e.currentTarget as HTMLAnchorElement).style.borderBottomColor = BRAND.colors.terracotta;
+                  if (!hasDropdown)
+                    (e.currentTarget as HTMLElement).style.borderBottomColor = BRAND.colors.terracotta;
                 }}
                 onMouseLeave={(e) => {
-                  if (!isFurniture)
-                    (e.currentTarget as HTMLAnchorElement).style.borderBottomColor = "transparent";
+                  if (!hasDropdown)
+                    (e.currentTarget as HTMLElement).style.borderBottomColor = "transparent";
                 }}
               >
                 {item.label}
-                {"badge" in item && item.badge && (
-                  <span
-                    style={{
-                      background: BRAND.colors.dark,
-                      color: "white",
-                      fontSize: "9px",
-                      padding: "1px 5px",
-                      borderRadius: "3px",
-                      letterSpacing: "0.04em",
-                      fontWeight: 600,
-                    }}
-                  >
+                {item.badge && (
+                  <span style={{ background: BRAND.colors.dark, color: "white", fontSize: "9px", padding: "1px 5px", borderRadius: "3px", letterSpacing: "0.04em", fontWeight: 600 }}>
                     NEW
                   </span>
                 )}
-                {isFurniture && (
-                  <span style={{ fontSize: "10px", opacity: 0.5 }}>▾</span>
-                )}
+                {hasDropdown && <span style={{ fontSize: "10px", opacity: 0.5 }}>▾</span>}
               </Link>
+
+              {/* ── Compact dropdown — Lighting / Rugs ─────────────────────── */}
+              {isCompact && isOpen && compactRoom && (
+                <div
+                  onMouseEnter={() => openPanel(item.dropdown!)}
+                  onMouseLeave={scheduleClose}
+                  style={{
+                    position: "absolute", top: "100%", left: 0, zIndex: 200,
+                    background: "white", border: "1px solid #eee",
+                    boxShadow: "0 12px 40px rgba(0,0,0,0.10)",
+                    borderRadius: "0 0 8px 8px",
+                    padding: "20px 24px 24px",
+                    minWidth: "200px",
+                  }}
+                >
+                  <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "#999", margin: "0 0 12px" }}>
+                    {compactRoom.label}
+                  </p>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+                    {compactRoom.subcategories.map((sub) => (
+                      <Link
+                        key={sub.slug}
+                        href={`/products?category=${compactRoom.slug}&subcategory=${sub.slug}`}
+                        style={{ fontSize: "14px", color: BRAND.colors.dark, textDecoration: "none", padding: "5px 0", display: "block" }}
+                        onMouseEnter={(e) => hoverLink(e, true)}
+                        onMouseLeave={(e) => hoverLink(e, false)}
+                      >
+                        {sub.label}
+                      </Link>
+                    ))}
+                    <Link
+                      href={`/products?category=${compactRoom.slug}`}
+                      style={{ fontSize: "13px", fontWeight: 500, color: BRAND.colors.terracotta, textDecoration: "none", marginTop: "10px", paddingTop: "10px", borderTop: "1px solid #f0f0f0", display: "block" }}
+                    >
+                      Shop all {compactRoom.label.toLowerCase()} →
+                    </Link>
+                  </div>
+                </div>
+              )}
             </div>
           );
         })}
       </nav>
 
-      {/* ── Furniture mega-dropdown ─────────────────────────────────────────── */}
-      {dropdownOpen && (
+      {/* ── Furniture mega-dropdown — full width ───────────────────────────── */}
+      {openDropdown === "furniture" && (
         <div
-          onMouseEnter={openDropdown}
+          onMouseEnter={() => openPanel("furniture")}
           onMouseLeave={scheduleClose}
           style={{
-            position: "absolute",
-            top: "100%",
-            left: 0,
-            right: 0,
-            background: "white",
-            borderBottom: "1px solid #eee",
+            position: "absolute", top: "100%", left: 0, right: 0, zIndex: 200,
+            background: "white", borderBottom: "1px solid #eee",
             boxShadow: "0 12px 40px rgba(0,0,0,0.08)",
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: "0",
             padding: "32px 40px 36px",
-            zIndex: 200,
+            display: "grid",
+            gridTemplateColumns: `repeat(${FURNITURE_ROOMS.length}, 1fr)`,
           }}
         >
-          {FURNITURE_COLS.map((col) => (
-            <div key={col.heading} style={{ padding: "0 16px" }}>
-              <p
-                style={{
-                  fontSize: "11px",
-                  fontWeight: 700,
-                  letterSpacing: "0.08em",
-                  textTransform: "uppercase",
-                  color: "#999",
-                  margin: "0 0 12px",
-                }}
+          {FURNITURE_ROOMS.map((room, i) => (
+            <div
+              key={room.slug}
+              style={{
+                padding: "0 20px",
+                borderRight: i < FURNITURE_ROOMS.length - 1 ? "1px solid #f2f2f2" : "none",
+              }}
+            >
+              {/* Room heading links to /rooms/[slug] — built in Step 3 */}
+              <Link
+                href={`/rooms/${room.slug}`}
+                style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "#aaa", marginBottom: "14px", display: "block", textDecoration: "none" }}
+                onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = BRAND.colors.terracotta)}
+                onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#aaa")}
               >
-                {col.heading}
-              </p>
+                {room.label}
+              </Link>
+
               <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                {col.links.map((link) => (
+                {room.subcategories.map((sub) => (
                   <Link
-                    key={link}
-                    href="/products"
-                    style={{
-                      fontSize: "14px",
-                      color: BRAND.colors.dark,
-                      textDecoration: "none",
-                    }}
-                    onMouseEnter={(e) =>
-                      ((e.currentTarget as HTMLAnchorElement).style.color = BRAND.colors.terracotta)
-                    }
-                    onMouseLeave={(e) =>
-                      ((e.currentTarget as HTMLAnchorElement).style.color = BRAND.colors.dark)
-                    }
+                    key={sub.slug}
+                    href={`/products?category=${room.slug}&subcategory=${sub.slug}`}
+                    style={{ fontSize: "14px", color: BRAND.colors.dark, textDecoration: "none" }}
+                    onMouseEnter={(e) => hoverLink(e, true)}
+                    onMouseLeave={(e) => hoverLink(e, false)}
                   >
-                    {link}
+                    {sub.label}
                   </Link>
                 ))}
               </div>
             </div>
           ))}
 
-          {/* Shop all link at bottom */}
-          <div
-            style={{
-              gridColumn: "1 / -1",
-              marginTop: "24px",
-              paddingTop: "20px",
-              borderTop: "1px solid #f0f0f0",
-            }}
-          >
-            <Link
-              href="/products"
-              style={{
-                fontSize: "13px",
-                fontWeight: 500,
-                color: BRAND.colors.terracotta,
-                textDecoration: "none",
-              }}
-            >
+          <div style={{ gridColumn: "1 / -1", marginTop: "24px", paddingTop: "20px", borderTop: "1px solid #f0f0f0" }}>
+            <Link href="/products" style={{ fontSize: "13px", fontWeight: 500, color: BRAND.colors.terracotta, textDecoration: "none" }}>
               Shop all furniture →
             </Link>
           </div>
