@@ -1181,6 +1181,144 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* COMMUNITY */}
+      <section style={{ background: "white", padding: "80px 40px" }}>
+
+        {/* Centered header */}
+        <div style={{ textAlign: "center", marginBottom: "48px" }}>
+          <p style={{
+            fontSize: "11px",
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            color: BRAND.colors.terracotta,
+            fontWeight: 500,
+            margin: "0 0 10px",
+          }}>
+            #MarsaHome
+          </p>
+          <h2 style={{
+            fontSize: "clamp(28px, 2.8vw, 40px)",
+            fontWeight: 700,
+            color: BRAND.colors.dark,
+            margin: "0 0 14px",
+            letterSpacing: "-0.02em",
+          }}>
+            Homes we love
+          </h2>
+          <p style={{
+            fontSize: "15px",
+            color: "#888",
+            margin: "0 auto",
+            maxWidth: "440px",
+            lineHeight: 1.65,
+          }}>
+            Share your space and tag <strong style={{ color: BRAND.colors.dark }}>@marsahome</strong> to be featured in our community gallery.
+          </p>
+        </div>
+
+        {/* Photo grid — 6 tiles, two rows of 3 with size variation */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "1.4fr 1fr 1fr 1.4fr",
+          gridTemplateRows: "220px 220px",
+          gap: "10px",
+          marginBottom: "40px",
+        }}>
+          {[
+            { bg: "#E8DDD5", row: "1 / 3", col: "1", label: "Living room" },
+            { bg: "#C9B5A0", row: "1",     col: "2", label: "Dining" },
+            { bg: "#D4CADA", row: "1",     col: "3", label: "Bedroom" },
+            { bg: "#B5C0B8", row: "2",     col: "2", label: "Office" },
+            { bg: "#D5C8BA", row: "2",     col: "3", label: "Entryway" },
+            { bg: "#C8B5A8", row: "1 / 3", col: "4", label: "Kitchen" },
+          ].map(({ bg, row, col, label }) => (
+            <div
+              key={label}
+              style={{
+                gridRow: row,
+                gridColumn: col,
+                background: bg,
+                borderRadius: "10px",
+                overflow: "hidden",
+                position: "relative",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {/* Placeholder icon */}
+              <div style={{ opacity: 0.3, textAlign: "center" }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={BRAND.colors.dark} strokeWidth="1.2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <polyline points="21 15 16 10 5 21" />
+                </svg>
+              </div>
+
+              {/* Label chip */}
+              <div style={{
+                position: "absolute",
+                bottom: "12px",
+                left: "12px",
+                background: "rgba(255,255,255,0.88)",
+                borderRadius: "5px",
+                padding: "3px 10px",
+                fontSize: "11px",
+                fontWeight: 600,
+                color: BRAND.colors.dark,
+                letterSpacing: "0.03em",
+              }}>
+                {label}
+              </div>
+
+              {/* Heart chip */}
+              <div style={{
+                position: "absolute",
+                top: "12px",
+                right: "12px",
+                background: "rgba(255,255,255,0.88)",
+                borderRadius: "5px",
+                padding: "3px 8px",
+                fontSize: "11px",
+                color: BRAND.colors.terracotta,
+              }}>
+                ♡
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Instagram CTA */}
+        <div style={{ textAlign: "center" }}>
+          <a
+            href="https://instagram.com/marsahome"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+              background: BRAND.colors.dark,
+              color: "white",
+              textDecoration: "none",
+              padding: "13px 28px",
+              borderRadius: "6px",
+              fontSize: "13px",
+              fontWeight: 500,
+              letterSpacing: "0.02em",
+            }}
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+              <circle cx="12" cy="12" r="4" />
+              <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" />
+            </svg>
+            Follow @marsahome
+          </a>
+        </div>
+
+      </section>
+
       {/* B2B BAND */}
       <section style={{
         background: "var(--terracotta)", padding: "28px 32px", display: "flex",
