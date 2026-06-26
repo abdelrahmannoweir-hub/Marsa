@@ -765,6 +765,131 @@ export default async function Home() {
 
       </section>
 
+      {/* SHOP BY ROOM */}
+      <section style={{ padding: "72px 0 80px", background: "white" }}>
+
+        {/* Header */}
+        <div style={{
+          padding: "0 40px",
+          display: "flex",
+          alignItems: "flex-end",
+          justifyContent: "space-between",
+          marginBottom: "32px",
+        }}>
+          <div>
+            <p style={{
+              fontSize: "11px",
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              color: BRAND.colors.terracotta,
+              fontWeight: 500,
+              margin: "0 0 8px",
+            }}>
+              Every space
+            </p>
+            <h2 style={{
+              fontSize: "clamp(26px, 2.6vw, 36px)",
+              fontWeight: 700,
+              margin: 0,
+              color: BRAND.colors.dark,
+              letterSpacing: "-0.02em",
+            }}>
+              Shop by room
+            </h2>
+          </div>
+          <Link
+            href="/products"
+            style={{
+              fontSize: "13px",
+              color: BRAND.colors.terracotta,
+              textDecoration: "none",
+              fontWeight: 500,
+            }}
+          >
+            Browse all →
+          </Link>
+        </div>
+
+        {/* Horizontal scroll track */}
+        <div style={{
+          display: "flex",
+          gap: "16px",
+          overflowX: "auto",
+          padding: "4px 40px 16px",
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+        }}>
+          {[
+            { label: "Living Room",  bg: "#E8DDD5", text: "#6B5A50" },
+            { label: "Dining Room",  bg: "#C9B5A0", text: "#5C4535" },
+            { label: "Bedroom",      bg: "#D4CADA", text: "#4A3F55" },
+            { label: "Home Office",  bg: "#C5CFCA", text: "#354540" },
+            { label: "Outdoor",      bg: "#BDC9B0", text: "#3D4D35" },
+            { label: "Kids Room",    bg: "#E8D5BE", text: "#6B4E30" },
+            { label: "Bathroom",     bg: "#C8D5D8", text: "#354850" },
+            { label: "Entryway",     bg: "#D5C8BA", text: "#5C4D40" },
+          ].map(({ label, bg, text }) => (
+            <Link
+              key={label}
+              href="/products"
+              style={{ textDecoration: "none", flexShrink: 0 }}
+            >
+              <div style={{
+                width: "180px",
+                borderRadius: "12px",
+                overflow: "hidden",
+                border: "1px solid rgba(0,0,0,0.06)",
+              }}>
+                {/* Photo area */}
+                <div style={{
+                  height: "200px",
+                  background: bg,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  position: "relative",
+                }}>
+                  <svg
+                    width="28" height="28" viewBox="0 0 24 24"
+                    fill="none" stroke={text} strokeWidth="1.2"
+                    style={{ opacity: 0.35 }}
+                  >
+                    <rect x="3" y="3" width="18" height="18" rx="2" />
+                    <circle cx="8.5" cy="8.5" r="1.5" />
+                    <polyline points="21 15 16 10 5 21" />
+                  </svg>
+                </div>
+
+                {/* Label */}
+                <div style={{
+                  padding: "14px 16px",
+                  background: "white",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}>
+                  <span style={{
+                    fontSize: "13px",
+                    fontWeight: 600,
+                    color: BRAND.colors.dark,
+                  }}>
+                    {label}
+                  </span>
+                  <svg
+                    width="13" height="13" viewBox="0 0 24 24"
+                    fill="none" stroke={BRAND.colors.terracotta}
+                    strokeWidth="2.5" strokeLinecap="round"
+                  >
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+      </section>
+
       {/* PRODUCTS FROM SHOPIFY */}
       <section style={{ padding: "48px 32px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
