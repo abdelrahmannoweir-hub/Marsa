@@ -890,29 +890,138 @@ export default async function Home() {
 
       </section>
 
-      {/* PRODUCTS FROM SHOPIFY */}
-      <section style={{ padding: "48px 32px" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "20px" }}>
-          <h2 style={{ fontSize: "20px", fontWeight: 600, margin: 0 }}>Best Sellers</h2>
-          <span style={{ fontSize: "13px", color: "var(--terracotta-dark)" }}>View all →</span>
+      {/* BEST SELLERS */}
+      <section style={{ padding: "72px 40px 80px", background: "#FAFAF8" }}>
+
+        {/* Header */}
+        <div style={{
+          display: "flex",
+          alignItems: "flex-end",
+          justifyContent: "space-between",
+          marginBottom: "40px",
+        }}>
+          <div>
+            <p style={{
+              fontSize: "11px",
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              color: BRAND.colors.terracotta,
+              fontWeight: 500,
+              margin: "0 0 8px",
+            }}>
+              Most loved
+            </p>
+            <h2 style={{
+              fontSize: "clamp(26px, 2.6vw, 36px)",
+              fontWeight: 700,
+              margin: 0,
+              color: BRAND.colors.dark,
+              letterSpacing: "-0.02em",
+            }}>
+              Best Sellers
+            </h2>
+          </div>
+          <Link
+            href="/products"
+            style={{
+              fontSize: "13px",
+              color: BRAND.colors.terracotta,
+              textDecoration: "none",
+              fontWeight: 500,
+            }}
+          >
+            View all →
+          </Link>
         </div>
+
+        {/* Grid */}
         {products.length === 0 ? (
           <p style={{ color: "#999", fontSize: "14px" }}>
             No products yet — add products in Shopify to see them here.
           </p>
         ) : (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "20px" }}>
-            {products.map(({ node }: any) => (
-              <div key={node.id} style={{ border: "1px solid #eee", borderRadius: "8px", overflow: "hidden" }}>
-                <div style={{ background: "#f5f5f5", height: "180px" }} />
-                <div style={{ padding: "12px" }}>
-                  <h3 style={{ fontSize: "14px", margin: "0 0 6px", fontWeight: 500 }}>{node.title}</h3>
-                  <p style={{ fontSize: "13px", color: "#777", margin: 0 }}>
-                    {node.priceRange.minVariantPrice.amount} {node.priceRange.minVariantPrice.currencyCode}
-                  </p>
-                </div>
-              </div>
-            ))}
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: "20px",
+          }}>
+            {products.map(({ node }: any) => {
+              const imageUrl = node.images?.edges?.[0]?.node?.url;
+              const price = node.priceRange?.minVariantPrice;
+              return (
+                <Link
+                  key={node.id}
+                  href={`/products/${node.handle}`}
+                  style={{ textDecoration: "none", color: "inherit" }}
+                >
+                  <div style={{
+                    background: "white",
+                    border: "1px solid #EEE9E4",
+                    borderRadius: "10px",
+                    overflow: "hidden",
+                  }}>
+                    {/* Image */}
+                    <div style={{
+                      aspectRatio: "1",
+                      background: "#F0EBE5",
+                      overflow: "hidden",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}>
+                      {imageUrl ? (
+                        <img
+                          src={imageUrl}
+                          alt={node.title}
+                          style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                        />
+                      ) : (
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C5B8B0" strokeWidth="1.2">
+                          <rect x="3" y="3" width="18" height="18" rx="2" />
+                          <circle cx="8.5" cy="8.5" r="1.5" />
+                          <polyline points="21 15 16 10 5 21" />
+                        </svg>
+                      )}
+                    </div>
+
+                    {/* Info */}
+                    <div style={{ padding: "14px 16px" }}>
+                      {node.vendor && (
+                        <p style={{
+                          fontSize: "11px",
+                          color: BRAND.colors.terracotta,
+                          fontWeight: 500,
+                          letterSpacing: "0.04em",
+                          margin: "0 0 4px",
+                          textTransform: "uppercase",
+                        }}>
+                          {node.vendor}
+                        </p>
+                      )}
+                      <h3 style={{
+                        fontSize: "14px",
+                        fontWeight: 500,
+                        margin: "0 0 8px",
+                        color: BRAND.colors.dark,
+                        lineHeight: 1.3,
+                      }}>
+                        {node.title}
+                      </h3>
+                      <p style={{
+                        fontSize: "13px",
+                        fontWeight: 600,
+                        color: BRAND.colors.dark,
+                        margin: 0,
+                      }}>
+                        {price
+                          ? `${parseFloat(price.amount).toLocaleString()} ${price.currencyCode}`
+                          : "—"}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         )}
       </section>
