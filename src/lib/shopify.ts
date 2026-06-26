@@ -211,6 +211,44 @@ export async function getCart(cartId: string) {
   return result?.data?.cartDiscountCodesUpdate?.cart;
 }
 
+export async function getProductsWithTags() {
+  const query = `
+    {
+      products(first: 50) {
+        edges {
+          node {
+            id
+            title
+            handle
+            tags
+            images(first: 1) {
+              edges { node { url } }
+            }
+            priceRange {
+              minVariantPrice { amount currencyCode }
+            }
+            variants(first: 1) {
+              edges { node { id } }
+            }
+          }
+        }
+      }
+    }
+  `;
+  const result = await shopifyFetch(query);
+  return (result?.data?.products?.edges || []) as Array<{
+    node: {
+      id: string;
+      title: string;
+      handle: string;
+      tags: string[];
+      images: { edges: { node: { url: string } }[] };
+      priceRange: { minVariantPrice: { amount: string; currencyCode: string } };
+      variants: { edges: { node: { id: string } }[] };
+    };
+  }>;
+}
+
 export async function getVendorStats(vendor: string) {
   const products = await getProductsByVendor(vendor);
   const totalProducts = products.length;
