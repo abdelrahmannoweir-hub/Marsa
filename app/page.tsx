@@ -1,5 +1,6 @@
 import { getProducts } from "../src/lib/shopify";
 import { BRAND } from "../src/config/brand";
+import { SiteHeader } from "../src/components/SiteHeader";
 
 export default async function Home() {
   const products = await getProducts();
@@ -7,36 +8,7 @@ export default async function Home() {
   return (
     <main style={{ fontFamily: "sans-serif", color: "#1A1614" }}>
 
-      {/* HEADER */}
-      <header style={{
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        padding: "16px 32px", borderBottom: "1px solid #eee"
-      }}>
-        <div style={{ fontWeight: 600, fontSize: "20px", color: "var(--terracotta-dark)" }}>
-          {BRAND.name}
-        </div>
-        <nav style={{ display: "flex", gap: "20px", fontSize: "13px", color: "#555" }}>
-          <span>Best Sellers</span>
-          <span>Furniture ▾</span>
-          <span>Home Accessories</span>
-          <span>Lighting</span>
-          <span>Carpets</span>
-          <span>Beddings</span>
-          <span>Fabrics</span>
-          <span>Ready to Ship</span>
-        </nav>
-        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-          <span style={{ fontSize: "12px", border: "1px solid #ccc", padding: "4px 10px", borderRadius: "6px" }}>
-            عربي
-          </span>
-          <span style={{
-            fontSize: "12px", background: "var(--terracotta)", color: "white",
-            padding: "6px 14px", borderRadius: "6px", fontWeight: 500
-          }}>
-            B2B
-          </span>
-        </div>
-      </header>
+      <SiteHeader />
 
       {/* HERO */}
       <section style={{ display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: "420px" }}>
@@ -74,14 +46,6 @@ export default async function Home() {
           <span style={{ color: "#aaa", fontSize: "13px" }}>Hero lifestyle image</span>
         </div>
       </section>
-
-      {/* TICKER */}
-      <div style={{
-        background: "var(--cream-pink)", padding: "12px 32px",
-        fontSize: "12px", color: "#72243E", borderTop: "1px solid #eee", borderBottom: "1px solid #eee"
-      }}>
-        Saudi Brands · Trade Pricing for Designers · Free Delivery over SAR 1,500 · Tabby &amp; Tamara
-      </div>
 
       {/* PRODUCTS FROM SHOPIFY */}
       <section style={{ padding: "48px 32px" }}>
