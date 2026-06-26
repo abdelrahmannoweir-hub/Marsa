@@ -51,25 +51,7 @@ export default function AddProduct() {
 
   function handleCategoryChange(newCategory: string) {
     setCategory(newCategory);
-    // Drop tags that belong to a category-specific group being deselected
-    const leavingGroups = TAG_GROUPS.filter(
-      (g) =>
-        g.onlyForCategories &&
-        !g.onlyForCategories.includes(newCategory)
-    );
-    if (leavingGroups.length > 0) {
-      const conditionalTags = new Set(leavingGroups.flatMap((g) => g.tags));
-      setSelectedTags((prev) => {
-        const next = new Set(prev);
-        conditionalTags.forEach((t) => next.delete(t));
-        return next;
-      });
-    }
   }
-
-  const visibleGroups = TAG_GROUPS.filter(
-    (g) => !g.onlyForCategories || g.onlyForCategories.includes(category)
-  );
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -414,7 +396,7 @@ export default function AddProduct() {
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            {visibleGroups.map((group) => (
+            {TAG_GROUPS.map((group) => (
               <div key={group.group}>
                 <p
                   style={{
@@ -427,20 +409,6 @@ export default function AddProduct() {
                   }}
                 >
                   {group.group}
-                  {group.onlyForCategories && (
-                    <span
-                      style={{
-                        marginLeft: "6px",
-                        fontWeight: 400,
-                        textTransform: "none",
-                        letterSpacing: 0,
-                        color: BRAND.colors.terracotta,
-                        fontSize: "11px",
-                      }}
-                    >
-                      — {category} only
-                    </span>
-                  )}
                 </p>
                 <div
                   style={{
