@@ -15,6 +15,32 @@ async function getFirstLocationId(): Promise<number | null> {
   return data.locations?.[0]?.id ?? null;
 }
 
+export async function getAllOrderStats(): Promise<{
+  totalOrders: number;
+  totalRevenue: number;
+  vendorRevenue: Record<string, number>;
+}> {
+  const res = await fetch(
+    `https://${domain}/admin/api/2024-01/orders.json?status=any&limit=250`,
+    { headers: adminHeaders }
+  );
+  const data = await res.json();
+  const orders: any[] = data.orders || [];
+
+  let totalRevenue = 0;
+  const vendorRevenue: Record<string, number> = {};
+
+  for (const order of orders) {
+    totalRevenue += parseFloat(order.total_price || "0");
+    for (const item of order.line_items || []) {
+      const v = item.vendor || "Unknown";
+      vendorRevenue[v] = (vendorRevenue[v] || 0) + parseFloat(item.price) * item.quantity;
+    }
+  }
+
+  return { totalOrders: orders.length, totalRevenue, vendorRevenue };
+}
+
 export async function getVendorOrders(vendor: string): Promise<{
   totalOrders: number;
   revenue: number;
