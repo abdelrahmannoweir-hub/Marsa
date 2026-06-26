@@ -249,6 +249,54 @@ export async function getProductsWithTags() {
   }>;
 }
 
+export async function getFilteredProducts({
+  query = "",
+  sortKey = "RELEVANCE",
+  reverse = false,
+}: {
+  query?: string;
+  sortKey?: string;
+  reverse?: boolean;
+}) {
+  const gql = `
+    query filteredProducts($query: String!, $sortKey: ProductSortKeys!, $reverse: Boolean!) {
+      products(first: 50, query: $query, sortKey: $sortKey, reverse: $reverse) {
+        edges {
+          node {
+            id
+            title
+            handle
+            vendor
+            tags
+            images(first: 1) {
+              edges { node { url } }
+            }
+            priceRange {
+              minVariantPrice { amount currencyCode }
+            }
+            variants(first: 1) {
+              edges { node { id } }
+            }
+          }
+        }
+      }
+    }
+  `;
+  const result = await shopifyFetch(gql, { query, sortKey, reverse });
+  return (result?.data?.products?.edges || []) as Array<{
+    node: {
+      id: string;
+      title: string;
+      handle: string;
+      vendor: string;
+      tags: string[];
+      images: { edges: { node: { url: string } }[] };
+      priceRange: { minVariantPrice: { amount: string; currencyCode: string } };
+      variants: { edges: { node: { id: string } }[] };
+    };
+  }>;
+}
+
 export async function getProductsByTag(tagQuery: string) {
   const query = `
     query getProductsByTag($query: String!) {
