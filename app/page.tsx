@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { getProducts } from "../src/lib/shopify";
 import { BRAND } from "../src/config/brand";
+import { CAMPAIGN_BANNER, EDITORIAL_BLOCKS } from "../src/config/homepage";
 import { SiteHeader } from "../src/components/SiteHeader";
 import { FaqAccordion } from "../src/components/FaqAccordion";
+import { ShopTheRoomSection } from "../src/components/ShopTheRoomSection";
 
 export default async function Home() {
   const products = await getProducts();
@@ -156,472 +158,221 @@ export default async function Home() {
 
       </section>
 
-      {/* EDITORIAL MOOD BLOCKS */}
+      {/* CAMPAIGN BANNER — edit content in src/config/homepage.ts */}
+      {CAMPAIGN_BANNER.active && (
+        <section style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          minHeight: "360px",
+        }}>
+
+          {/* Left — promotional copy */}
+          <div style={{
+            background: BRAND.colors.dark,
+            padding: "56px 64px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            gap: "0",
+          }}>
+            {/* "X DAYS ONLY" label */}
+            <div style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "10px",
+              marginBottom: "24px",
+              alignSelf: "flex-start",
+            }}>
+              <div style={{
+                background: BRAND.colors.terracotta,
+                color: "white",
+                fontSize: "10px",
+                fontWeight: 700,
+                letterSpacing: "0.14em",
+                textTransform: "uppercase",
+                padding: "5px 12px",
+                borderRadius: "4px",
+              }}>
+                {CAMPAIGN_BANNER.label}
+              </div>
+            </div>
+
+            {/* Headline — split on \n */}
+            <h2 style={{
+              fontSize: "clamp(30px, 3.2vw, 48px)",
+              fontWeight: 700,
+              lineHeight: 1.15,
+              color: "#F2EDE4",
+              margin: "0 0 16px",
+              letterSpacing: "-0.02em",
+              whiteSpace: "pre-line",
+            }}>
+              {CAMPAIGN_BANNER.headline}
+            </h2>
+
+            {/* Subtext */}
+            <p style={{
+              fontSize: "14px",
+              color: "rgba(242,237,228,0.55)",
+              margin: "0 0 36px",
+              lineHeight: 1.65,
+              maxWidth: "360px",
+            }}>
+              {CAMPAIGN_BANNER.subtext}
+            </p>
+
+            {/* CTA */}
+            <Link
+              href={CAMPAIGN_BANNER.ctaHref}
+              style={{
+                alignSelf: "flex-start",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
+                color: "#F2EDE4",
+                fontSize: "14px",
+                fontWeight: 500,
+                textDecoration: "none",
+                borderBottom: "1.5px solid rgba(242,237,228,0.4)",
+                paddingBottom: "3px",
+                letterSpacing: "0.02em",
+              }}
+            >
+              {CAMPAIGN_BANNER.ctaText}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 18 15 12 9 6" />
+              </svg>
+            </Link>
+          </div>
+
+          {/* Right — hero image placeholder */}
+          <div style={{
+            background: "linear-gradient(135deg, #C4572E 0%, #8B3D20 100%)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            position: "relative",
+            overflow: "hidden",
+          }}>
+            {/* Decorative diagonal stripe */}
+            <div style={{
+              position: "absolute",
+              inset: 0,
+              background: "repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,255,255,0.03) 40px, rgba(255,255,255,0.03) 80px)",
+            }} />
+            <div style={{ position: "relative", textAlign: "center", opacity: 0.35 }}>
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.2">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <polyline points="21 15 16 10 5 21" />
+              </svg>
+              <p style={{ color: "white", fontSize: "11px", margin: "10px 0 0", letterSpacing: "0.08em" }}>
+                Sale campaign image
+              </p>
+            </div>
+          </div>
+
+        </section>
+      )}
+
+      {/* EDITORIAL MOOD BLOCKS — edit content in src/config/homepage.ts */}
       <section style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}>
-
-        {/* Block 1 — Dining */}
-        <div style={{
-          position: "relative",
-          height: "68vh",
-          background: "linear-gradient(160deg, #C9B5A0 0%, #A8917A 100%)",
-          overflow: "hidden",
-        }}>
-          {/* Image placeholder icon */}
-          <div style={{
-            position: "absolute",
-            inset: 0,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}>
-            <div style={{ textAlign: "center", opacity: 0.25 }}>
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.2">
-                <rect x="3" y="3" width="18" height="18" rx="2" />
-                <circle cx="8.5" cy="8.5" r="1.5" />
-                <polyline points="21 15 16 10 5 21" />
-              </svg>
-              <p style={{ color: "white", fontSize: "11px", margin: "8px 0 0", letterSpacing: "0.06em" }}>
-                Dining mood image
-              </p>
-            </div>
-          </div>
-
-          {/* Gradient scrim */}
-          <div style={{
-            position: "absolute",
-            inset: 0,
-            background: "linear-gradient(to top, rgba(26,22,20,0.75) 0%, rgba(26,22,20,0.1) 55%, transparent 100%)",
-          }} />
-
-          {/* Text */}
-          <div style={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            padding: "36px 40px",
-            color: "white",
-          }}>
-            <p style={{
-              fontSize: "11px",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              opacity: 0.7,
-              margin: "0 0 10px",
-              fontWeight: 500,
-            }}>
-              Dining
-            </p>
-            <h2 style={{
-              fontSize: "clamp(26px, 2.8vw, 40px)",
-              fontWeight: 700,
-              lineHeight: 1.15,
-              margin: "0 0 10px",
-              letterSpacing: "-0.02em",
-            }}>
-              Lingering is encouraged.
-            </h2>
-            <p style={{
-              fontSize: "13px",
-              opacity: 0.75,
-              margin: "0 0 22px",
-              lineHeight: 1.5,
-              maxWidth: "280px",
-            }}>
-              Dining spaces that make every meal an occasion worth staying for.
-            </p>
-            <Link
-              href="/products"
-              style={{
-                color: "white",
-                fontSize: "13px",
-                fontWeight: 500,
-                textDecoration: "none",
-                letterSpacing: "0.04em",
-                borderBottom: "1px solid rgba(255,255,255,0.5)",
-                paddingBottom: "2px",
-              }}
-            >
-              Shop dining →
-            </Link>
-          </div>
-        </div>
-
-        {/* Block 2 — Living */}
-        <div style={{
-          position: "relative",
-          height: "68vh",
-          background: "linear-gradient(160deg, #B5C0B8 0%, #8D9E94 100%)",
-          overflow: "hidden",
-        }}>
-          {/* Image placeholder icon */}
-          <div style={{
-            position: "absolute",
-            inset: 0,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}>
-            <div style={{ textAlign: "center", opacity: 0.25 }}>
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.2">
-                <rect x="3" y="3" width="18" height="18" rx="2" />
-                <circle cx="8.5" cy="8.5" r="1.5" />
-                <polyline points="21 15 16 10 5 21" />
-              </svg>
-              <p style={{ color: "white", fontSize: "11px", margin: "8px 0 0", letterSpacing: "0.06em" }}>
-                Living room mood image
-              </p>
-            </div>
-          </div>
-
-          {/* Gradient scrim */}
-          <div style={{
-            position: "absolute",
-            inset: 0,
-            background: "linear-gradient(to top, rgba(26,22,20,0.75) 0%, rgba(26,22,20,0.1) 55%, transparent 100%)",
-          }} />
-
-          {/* Text */}
-          <div style={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            padding: "36px 40px",
-            color: "white",
-          }}>
-            <p style={{
-              fontSize: "11px",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              opacity: 0.7,
-              margin: "0 0 10px",
-              fontWeight: 500,
-            }}>
-              Living Room
-            </p>
-            <h2 style={{
-              fontSize: "clamp(26px, 2.8vw, 40px)",
-              fontWeight: 700,
-              lineHeight: 1.15,
-              margin: "0 0 10px",
-              letterSpacing: "-0.02em",
-            }}>
-              Just, relax.
-            </h2>
-            <p style={{
-              fontSize: "13px",
-              opacity: 0.75,
-              margin: "0 0 22px",
-              lineHeight: 1.5,
-              maxWidth: "280px",
-            }}>
-              Living rooms designed for real life — and the rare afternoon with nowhere to be.
-            </p>
-            <Link
-              href="/products"
-              style={{
-                color: "white",
-                fontSize: "13px",
-                fontWeight: 500,
-                textDecoration: "none",
-                letterSpacing: "0.04em",
-                borderBottom: "1px solid rgba(255,255,255,0.5)",
-                paddingBottom: "2px",
-              }}
-            >
-              Shop living →
-            </Link>
-          </div>
-        </div>
-
-      </section>
-
-      {/* SHOP THE ROOM */}
-      <section style={{ padding: "80px 40px", background: "#FDFAF7" }}>
-
-        {/* Section header */}
-        <div style={{
-          display: "flex",
-          alignItems: "flex-end",
-          justifyContent: "space-between",
-          marginBottom: "40px",
-        }}>
-          <div>
-            <p style={{
-              fontSize: "11px",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: BRAND.colors.terracotta,
-              fontWeight: 500,
-              margin: "0 0 8px",
-            }}>
-              Curated spaces
-            </p>
-            <h2 style={{
-              fontSize: "clamp(28px, 2.8vw, 38px)",
-              fontWeight: 700,
-              margin: 0,
-              color: BRAND.colors.dark,
-              letterSpacing: "-0.02em",
-            }}>
-              Shop the room
-            </h2>
-          </div>
-          <Link
-            href="/products"
+        {EDITORIAL_BLOCKS.map((block) => (
+          <div
+            key={block.slug}
             style={{
-              fontSize: "13px",
-              color: BRAND.colors.terracotta,
-              textDecoration: "none",
-              fontWeight: 500,
-              letterSpacing: "0.02em",
+              position: "relative",
+              height: "68vh",
+              background: block.bg,
+              overflow: "hidden",
             }}
           >
-            View all rooms →
-          </Link>
-        </div>
-
-        {/* Two room cards */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }}>
-
-          {/* Room card 1 — The Calm Living Room */}
-          <div style={{
-            background: "white",
-            borderRadius: "12px",
-            overflow: "hidden",
-            border: "1px solid #EEE9E4",
-          }}>
-            {/* Photo area */}
+            {/* Image placeholder */}
             <div style={{
-              position: "relative",
-              height: "400px",
-              background: "linear-gradient(135deg, #E8DDD5 0%, #D4C8BD 100%)",
-              overflow: "hidden",
+              position: "absolute",
+              inset: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}>
-              {/* Placeholder */}
-              <div style={{
-                position: "absolute",
-                inset: 0,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                opacity: 0.3,
-              }}>
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke={BRAND.colors.dark} strokeWidth="1.2">
+              <div style={{ textAlign: "center", opacity: 0.25 }}>
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.2">
                   <rect x="3" y="3" width="18" height="18" rx="2" />
                   <circle cx="8.5" cy="8.5" r="1.5" />
                   <polyline points="21 15 16 10 5 21" />
                 </svg>
-              </div>
-
-              {/* Hotspot dots */}
-              {[
-                { top: "38%", left: "28%", n: 1 },
-                { top: "60%", left: "55%", n: 2 },
-                { top: "25%", left: "65%", n: 3 },
-              ].map(({ top, left, n }) => (
-                <div
-                  key={n}
-                  style={{
-                    position: "absolute",
-                    top,
-                    left,
-                    width: "28px",
-                    height: "28px",
-                    borderRadius: "50%",
-                    background: "white",
-                    boxShadow: "0 2px 10px rgba(0,0,0,0.18)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "11px",
-                    fontWeight: 700,
-                    color: BRAND.colors.dark,
-                    cursor: "pointer",
-                    transform: "translate(-50%, -50%)",
-                  }}
-                >
-                  {n}
-                </div>
-              ))}
-
-              {/* Room label badge */}
-              <div style={{
-                position: "absolute",
-                top: "16px",
-                left: "16px",
-                background: "rgba(255,255,255,0.92)",
-                backdropFilter: "blur(4px)",
-                borderRadius: "6px",
-                padding: "5px 12px",
-                fontSize: "11px",
-                fontWeight: 600,
-                color: BRAND.colors.dark,
-                letterSpacing: "0.04em",
-              }}>
-                Living Room
+                <p style={{ color: "white", fontSize: "11px", margin: "8px 0 0", letterSpacing: "0.06em" }}>
+                  {block.placeholderLabel}
+                </p>
               </div>
             </div>
 
-            {/* Card footer */}
+            {/* Gradient scrim */}
             <div style={{
-              padding: "24px 28px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
+              position: "absolute",
+              inset: 0,
+              background: "linear-gradient(to top, rgba(26,22,20,0.78) 0%, rgba(26,22,20,0.1) 55%, transparent 100%)",
+            }} />
+
+            {/* Text overlay */}
+            <div style={{
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              padding: "36px 40px",
+              color: "white",
             }}>
-              <div>
-                <h3 style={{
-                  fontSize: "16px",
-                  fontWeight: 600,
-                  margin: "0 0 4px",
-                  color: BRAND.colors.dark,
-                }}>
-                  The Calm Living Room
-                </h3>
-                <p style={{ fontSize: "13px", color: "#999", margin: 0 }}>
-                  3 pieces · Starting from SAR 1,200
-                </p>
-              </div>
+              <p style={{
+                fontSize: "11px",
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                opacity: 0.65,
+                margin: "0 0 12px",
+                fontWeight: 500,
+              }}>
+                {block.category}
+              </p>
+              <h2 style={{
+                fontSize: "clamp(26px, 2.8vw, 40px)",
+                fontWeight: 700,
+                fontStyle: "italic",
+                lineHeight: 1.15,
+                margin: "0 0 10px",
+                letterSpacing: "-0.02em",
+              }}>
+                {block.moodHeadline}
+              </h2>
+              <p style={{
+                fontSize: "13px",
+                opacity: 0.7,
+                margin: "0 0 24px",
+                lineHeight: 1.5,
+                maxWidth: "260px",
+              }}>
+                {block.subtext}
+              </p>
               <Link
-                href="/products"
+                href={`/rooms/${block.slug}`}
                 style={{
-                  background: BRAND.colors.dark,
                   color: "white",
-                  textDecoration: "none",
-                  padding: "10px 20px",
-                  borderRadius: "6px",
                   fontSize: "13px",
                   fontWeight: 500,
-                  whiteSpace: "nowrap",
+                  textDecoration: "none",
+                  letterSpacing: "0.04em",
+                  borderBottom: "1px solid rgba(255,255,255,0.45)",
+                  paddingBottom: "2px",
                 }}
               >
-                Shop this room
+                Shop {block.category.toLowerCase()} →
               </Link>
             </div>
           </div>
-
-          {/* Room card 2 — The Bold Dining Room */}
-          <div style={{
-            background: "white",
-            borderRadius: "12px",
-            overflow: "hidden",
-            border: "1px solid #EEE9E4",
-          }}>
-            {/* Photo area */}
-            <div style={{
-              position: "relative",
-              height: "400px",
-              background: "linear-gradient(135deg, #C9B5A0 0%, #B09A87 100%)",
-              overflow: "hidden",
-            }}>
-              {/* Placeholder */}
-              <div style={{
-                position: "absolute",
-                inset: 0,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                opacity: 0.3,
-              }}>
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke={BRAND.colors.dark} strokeWidth="1.2">
-                  <rect x="3" y="3" width="18" height="18" rx="2" />
-                  <circle cx="8.5" cy="8.5" r="1.5" />
-                  <polyline points="21 15 16 10 5 21" />
-                </svg>
-              </div>
-
-              {/* Hotspot dots */}
-              {[
-                { top: "45%", left: "35%", n: 1 },
-                { top: "30%", left: "60%", n: 2 },
-                { top: "65%", left: "70%", n: 3 },
-                { top: "20%", left: "25%", n: 4 },
-              ].map(({ top, left, n }) => (
-                <div
-                  key={n}
-                  style={{
-                    position: "absolute",
-                    top,
-                    left,
-                    width: "28px",
-                    height: "28px",
-                    borderRadius: "50%",
-                    background: "white",
-                    boxShadow: "0 2px 10px rgba(0,0,0,0.18)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "11px",
-                    fontWeight: 700,
-                    color: BRAND.colors.dark,
-                    cursor: "pointer",
-                    transform: "translate(-50%, -50%)",
-                  }}
-                >
-                  {n}
-                </div>
-              ))}
-
-              {/* Room label badge */}
-              <div style={{
-                position: "absolute",
-                top: "16px",
-                left: "16px",
-                background: "rgba(255,255,255,0.92)",
-                backdropFilter: "blur(4px)",
-                borderRadius: "6px",
-                padding: "5px 12px",
-                fontSize: "11px",
-                fontWeight: 600,
-                color: BRAND.colors.dark,
-                letterSpacing: "0.04em",
-              }}>
-                Dining Room
-              </div>
-            </div>
-
-            {/* Card footer */}
-            <div style={{
-              padding: "24px 28px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}>
-              <div>
-                <h3 style={{
-                  fontSize: "16px",
-                  fontWeight: 600,
-                  margin: "0 0 4px",
-                  color: BRAND.colors.dark,
-                }}>
-                  The Bold Dining Room
-                </h3>
-                <p style={{ fontSize: "13px", color: "#999", margin: 0 }}>
-                  4 pieces · Starting from SAR 2,800
-                </p>
-              </div>
-              <Link
-                href="/products"
-                style={{
-                  background: BRAND.colors.dark,
-                  color: "white",
-                  textDecoration: "none",
-                  padding: "10px 20px",
-                  borderRadius: "6px",
-                  fontSize: "13px",
-                  fontWeight: 500,
-                  whiteSpace: "nowrap",
-                }}
-              >
-                Shop this room
-              </Link>
-            </div>
-          </div>
-
-        </div>
+        ))}
       </section>
+
+      {/* SHOP THE ROOM — data-driven from Supabase `rooms` table */}
+      <ShopTheRoomSection />
 
       {/* DESIGN MY HOME */}
       <section style={{
@@ -659,7 +410,7 @@ export default async function Home() {
               fontWeight: 500,
               letterSpacing: "0.06em",
             }}>
-              AI-powered
+              Interactive
             </span>
           </div>
 
@@ -681,11 +432,11 @@ export default async function Home() {
             margin: "0 0 36px",
             maxWidth: "400px",
           }}>
-            Tell us which room you want to furnish, answer a few quick questions about your taste, and we'll build a curated shortlist just for you.
+            Pick a room, choose one piece at a time from real products, and add your complete look to cart in a single click.
           </p>
 
           <Link
-            href="/quiz"
+            href="/design-my-home"
             style={{
               display: "inline-block",
               background: BRAND.colors.dark,
@@ -716,14 +467,14 @@ export default async function Home() {
           </p>
 
           {[
-            { label: "Living Room", desc: "Sofas, tables, lighting & more", icon: "⬜" },
-            { label: "Bedroom",     desc: "Beds, storage & bedside essentials", icon: "⬜" },
-            { label: "Dining Room", desc: "Tables, chairs & sideboards", icon: "⬜" },
-            { label: "Home Office", desc: "Desks, shelving & task lighting", icon: "⬜" },
-          ].map(({ label, desc }) => (
+            { label: "Living Room", desc: "Sofas, tables, lighting & more", slug: "living-room" },
+            { label: "Bedroom",     desc: "Beds, storage & bedside essentials", slug: "bedroom" },
+            { label: "Dining Room", desc: "Tables, chairs & sideboards", slug: "dining-room" },
+            { label: "Home Office", desc: "Desks, shelving & task lighting", slug: "office" },
+          ].map(({ label, desc, slug }) => (
             <Link
               key={label}
-              href="/quiz"
+              href={`/design-my-home?room=${slug}`}
               style={{
                 display: "flex",
                 alignItems: "center",
