@@ -54,7 +54,7 @@ export default async function RoomPage({
           <p style={{ fontSize: "12px", color: "#AAA", margin: "0 0 16px" }}>
             <Link href="/" style={{ color: "#AAA", textDecoration: "none" }}>Home</Link>
             {" / "}
-            <Link href="/products" style={{ color: "#AAA", textDecoration: "none" }}>Furniture</Link>
+            <Link href="/products" style={{ color: "#AAA", textDecoration: "none" }}>Shop</Link>
             {" / "}
             <span style={{ color: BRAND.colors.dark }}>{room.label}</span>
             {activeSub && (

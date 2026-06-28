@@ -6,6 +6,14 @@ import { ROOM_CATEGORIES } from "../config/tags";
 
 // ── Icons ────────────────────────────────────────────────────────────────────
 
+function SearchIcon() {
+  return (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+    </svg>
+  );
+}
+
 function HeartIcon() {
   return (
     <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -48,19 +56,18 @@ type NavItem = {
   sale?: boolean;
   badge?: boolean;
   dropdown?: string;
+  highlight?: boolean;
 };
 
 const NAV: NavItem[] = [
   { label: "Sale", href: "/products", sale: true },
   { label: "New", href: "/products", badge: true },
   { label: "Furniture", href: "/products", dropdown: "furniture" },
-  { label: "Lighting", href: "/products", dropdown: "lighting" },
-  { label: "Rugs", href: "/products", dropdown: "rugs" },
-  { label: "Beddings", href: "/products" },
-  { label: "Fabrics", href: "/products" },
+  { label: "Lighting", href: "/rooms/lighting", dropdown: "lighting" },
+  { label: "Rugs", href: "/rooms/rugs", dropdown: "rugs" },
+  { label: "Beddings", href: "/products?category=bedroom&subcategory=beddings" },
   { label: "Accessories", href: "/products" },
-  { label: "Designers", href: "/products" },
-  { label: "Inspiration", href: "/products" },
+  { label: "Design My Home", href: "/design-my-home", highlight: true },
   { label: "Trade Program", href: "/designer/apply" },
 ];
 
@@ -94,15 +101,47 @@ export function SiteHeader() {
       </div>
 
       {/* ── 2. Header bar ──────────────────────────────────────────────────── */}
-      <header style={{ background: "white", borderBottom: "1px solid #eee", padding: "0 40px", height: "60px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <Link href="/" style={{ fontWeight: 700, fontSize: "22px", color: BRAND.colors.dark, textDecoration: "none", letterSpacing: "0.06em" }}>
-          {BRAND.name}
-        </Link>
+      <header style={{ background: "white", borderBottom: "1px solid #eee", padding: "0 40px", height: "60px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "relative" }}>
 
-        <div style={{ display: "flex", alignItems: "center", gap: "20px", color: BRAND.colors.dark }}>
+        {/* Left: language toggle */}
+        <div style={{ display: "flex", alignItems: "center", minWidth: "60px" }}>
           <button style={{ border: "1px solid #ddd", background: "transparent", padding: "4px 10px", borderRadius: "4px", fontSize: "12px", cursor: "pointer", color: BRAND.colors.dark, letterSpacing: "0.03em" }}>
             EN&nbsp;|&nbsp;ع
           </button>
+        </div>
+
+        {/* Center: logo — absolutely centred so it's always in the middle */}
+        <Link
+          href="/"
+          style={{
+            position: "absolute",
+            left: "50%",
+            transform: "translateX(-50%)",
+            fontWeight: 700,
+            fontSize: "22px",
+            color: BRAND.colors.dark,
+            textDecoration: "none",
+            letterSpacing: "0.06em",
+            zIndex: 1,
+          }}
+        >
+          {BRAND.name}
+        </Link>
+
+        {/* Right: search bar + icons */}
+        <div style={{ display: "flex", alignItems: "center", gap: "16px", color: BRAND.colors.dark }}>
+          <form action="/products" method="get" style={{ display: "flex", alignItems: "center", background: "#F5F3F0", borderRadius: "6px", padding: "5px 12px", gap: "7px" }}>
+            <SearchIcon />
+            <input
+              name="search"
+              placeholder="Search products…"
+              style={{
+                background: "none", border: "none", outline: "none",
+                fontSize: "12px", color: BRAND.colors.dark, width: "150px",
+                letterSpacing: "0.01em",
+              }}
+            />
+          </form>
           <button aria-label="Wishlist" style={{ background: "none", border: "none", cursor: "pointer", color: BRAND.colors.dark, padding: 0, display: "flex" }}>
             <HeartIcon />
           </button>
@@ -139,8 +178,8 @@ export function SiteHeader() {
                 href={item.href}
                 style={{
                   display: "flex", alignItems: "center", gap: "5px",
-                  padding: "14px 14px", fontSize: "13px", fontWeight: 400,
-                  color: item.sale ? BRAND.colors.terracotta : BRAND.colors.dark,
+                  padding: "14px 14px", fontSize: "13px", fontWeight: item.highlight ? 600 : 400,
+                  color: item.sale ? BRAND.colors.terracotta : item.highlight ? BRAND.colors.terracotta : BRAND.colors.dark,
                   textDecoration: "none", whiteSpace: "nowrap",
                   borderBottom: "2px solid transparent",
                   transition: "border-color 0.15s, color 0.15s",
@@ -193,7 +232,7 @@ export function SiteHeader() {
                       </Link>
                     ))}
                     <Link
-                      href={`/products?category=${compactRoom.slug}`}
+                      href={`/rooms/${compactRoom.slug}`}
                       style={{ fontSize: "13px", fontWeight: 500, color: BRAND.colors.terracotta, textDecoration: "none", marginTop: "10px", paddingTop: "10px", borderTop: "1px solid #f0f0f0", display: "block" }}
                     >
                       Shop all {compactRoom.label.toLowerCase()} →
