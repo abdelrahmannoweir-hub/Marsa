@@ -2,6 +2,7 @@ import { SiteHeader } from "../../src/components/SiteHeader";
 import { RoomBuilder } from "../../src/components/RoomBuilder";
 import { getProductsByTag } from "../../src/lib/shopify";
 import { DESIGN_ROOM_STEPS, DESIGN_ROOM_META } from "../../src/config/homepage";
+import { BRAND } from "../../src/config/brand";
 
 export default async function DesignMyHomePage({
   searchParams,
@@ -40,7 +41,7 @@ export default async function DesignMyHomePage({
 
       {/* ── Design consultation banner ───────────────────────────────────── */}
       <section style={{
-        background: "#1A1614",
+        background: BRAND.colors.dark,
         padding: "52px 40px",
         display: "grid",
         gridTemplateColumns: "1fr auto",
@@ -50,10 +51,10 @@ export default async function DesignMyHomePage({
         <div>
           <div style={{
             display: "inline-flex", alignItems: "center", gap: "8px",
-            background: "rgba(196,87,46,0.2)", borderRadius: "4px",
+            background: "rgba(196,87,46,0.18)", borderRadius: "4px",
             padding: "4px 12px", marginBottom: "16px",
           }}>
-            <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#C4572E" }}>
+            <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: BRAND.colors.terracotta }}>
               Free Design Consultation
             </span>
           </div>
@@ -78,7 +79,7 @@ export default async function DesignMyHomePage({
             href="mailto:design@marsa.sa?subject=Design Consultation Request"
             style={{
               display: "inline-block",
-              background: "#C4572E",
+              background: BRAND.colors.terracotta,
               color: "white",
               textDecoration: "none",
               padding: "13px 28px",
