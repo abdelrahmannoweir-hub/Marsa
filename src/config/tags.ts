@@ -29,6 +29,7 @@ export const ROOM_CATEGORIES: RoomCategory[] = [
       { label: "Nightstands", slug: "nightstands" },
       { label: "Dressers", slug: "dressers" },
       { label: "Wardrobes", slug: "wardrobes" },
+      { label: "Beddings", slug: "beddings" },
     ],
   },
   {
